@@ -1,16 +1,16 @@
 package com.campus.ledrian;
 
+import java.util.Collections;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class LedrianApplication {
 
-	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(LedrianApplication.class, args);
-                
-                
-	}
+    public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(LedrianApplication.class);
+        app.setDefaultProperties(Collections.singletonMap("server.port", "8083"));
+        app.run(args);
+    }
 
 }
