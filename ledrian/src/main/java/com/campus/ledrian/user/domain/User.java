@@ -16,27 +16,30 @@ public class User {
     private String username;
     private String password;
     private String photo;
+    private String lastname;
 
     public User() {
     }
 
-    public User(Long id, String name, String email, String username, String password, String photo) {
+    public User(Long id, String name, String email, String username, String password, String photo, String lastname) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.username = username;
         this.password = password;
         this.photo = photo;
+        this.lastname = lastname;
     }
 
-    public User(String name, String email, String username, String password, String photo) {
-        this.name = name;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.photo = photo;
+    public String getLastname() {
+        return lastname;
     }
-    
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+
     public Long getId() {
         return id;
     }
