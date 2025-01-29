@@ -10,7 +10,7 @@ public interface TypeInterationService {
      List<TypeInterationDTO> findAll();
    Optional<TypeInterationDTO> findById(Long id);
    TypeInterationDTO save(TypeInterationDTO typeInterationDTO);
-   void delete(Long id);
+   void deleteById(Long id);
 //   TypeInterationDTO convertToDTO(TypeInteration typeInterationDTO);
 //   TypeInteration convertToEntity(TypeInterationDTO typeInterationDTO);
 }

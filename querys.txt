@@ -1,0 +1,14 @@
+register user
+
+{
+    "name":"juan",
+    "lastname":"marino",
+    "email":"marino@",
+    "password":"1234",
+    "username":"juakis"
+}
+
+login
+
+email = marino@
+password = 1234

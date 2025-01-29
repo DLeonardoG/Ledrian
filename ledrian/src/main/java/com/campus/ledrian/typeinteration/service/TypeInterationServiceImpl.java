@@ -42,7 +42,7 @@ public class TypeInterationServiceImpl implements TypeInterationService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         typeInterationRepository.deleteById(id);
     }
 
