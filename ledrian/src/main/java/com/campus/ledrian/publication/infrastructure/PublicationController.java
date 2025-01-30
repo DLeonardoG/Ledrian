@@ -3,20 +3,19 @@ package com.campus.ledrian.publication.infrastructure;
 
 import com.campus.ledrian.publication.domain.PublicationDTO;
 import com.campus.ledrian.publication.service.PublicationServiceImpl;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/publications")
@@ -43,6 +42,40 @@ public class PublicationController {
     @PostMapping
     public PublicationDTO createPublication(@RequestBody PublicationDTO publicationDTO) {
         return publicationServiceImpl.save(publicationDTO);
+    }
+
+    @PostMapping(value = "/upload", consumes = "multipart/form-data")
+    public ResponseEntity<String> createPublicationWithImage(
+            @RequestParam("description") String description,
+            @RequestParam("photo") MultipartFile photo,
+            @RequestParam("username") String username) {
+
+        try {
+            String uploadDir = "uploads/";
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(photo.getInputStream(), filePath);
+
+            PublicationDTO publicationDTO = new PublicationDTO(
+                    null,
+                    description,
+                    filePath.toString(),
+                    username,
+                    LocalDateTime.now()
+            );
+
+            publicationServiceImpl.save(publicationDTO);
+            return ResponseEntity.ok("Publicación creada exitosamente");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error al guardar la imagen");
+        }
     }
     
      @DeleteMapping("/{id}")

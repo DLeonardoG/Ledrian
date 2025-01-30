@@ -25,6 +25,7 @@ public class User {
     private String password;
     private String photo;
     private String lastname;
+    private String bio;
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Publication> publications;
@@ -52,6 +53,14 @@ public class User {
         this.password = password;
         this.photo = photo;
         this.lastname = lastname;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public String getLastname() {

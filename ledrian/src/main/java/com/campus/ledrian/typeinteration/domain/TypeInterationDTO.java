@@ -3,7 +3,7 @@ package com.campus.ledrian.typeinteration.domain;
 
 
 public class TypeInterationDTO {
-        private Long id;
+    private Long id;
     private String type;
     
     public TypeInterationDTO() {
