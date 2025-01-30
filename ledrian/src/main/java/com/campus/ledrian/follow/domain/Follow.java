@@ -1,0 +1,77 @@
+package com.campus.ledrian.follow.domain;
+
+import com.campus.ledrian.user.domain.User;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
+
+@Entity
+public class Follow {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "follower_id")
+    private User follower;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "following_id")
+    private User following;
+    
+    private LocalDateTime date;
+
+    public Follow() {
+    }
+
+    public Follow(Long id, User follower, User following, LocalDateTime date) {
+        this.id = id;
+        this.follower = follower;
+        this.following = following;
+        this.date = date;
+    }
+
+    public Follow(User follower, User following, LocalDateTime date) {
+        this.follower = follower;
+        this.following = following;
+        this.date = date;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUserFollowed() {
+        return follower;
+    }
+
+    public void setUserFollowed(User follower) {
+        this.follower = follower;
+    }
+
+    public User getUserFollowing() {
+        return following;
+    }
+
+    public void setUserFollowing(User following) {
+        this.following = following;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+}

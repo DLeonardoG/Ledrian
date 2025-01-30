@@ -4,6 +4,7 @@ package com.campus.ledrian.typeinteration.infrastructure;
 import com.campus.ledrian.typeinteration.domain.TypeInterationDTO;
 import com.campus.ledrian.typeinteration.service.TypeInterationServiceImpl;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,23 +35,28 @@ public class TypeInterationController {
     
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TypeInterationDTO> getAllRoles() {
+    public List<TypeInterationDTO> getAllTypeInterations() {
         return typeInterationServiceImpl.findAll();
     }
     
+    @GetMapping("/{id}")
+    public Optional findById(@PathVariable Long id){
+        return typeInterationServiceImpl.findById(id);
+    }
+    
     @PostMapping
-    public TypeInterationDTO createRole(@RequestBody TypeInterationDTO typeInterationDTO) {
+    public TypeInterationDTO createTypeInteration(@RequestBody TypeInterationDTO typeInterationDTO) {
         return typeInterationServiceImpl.save(typeInterationDTO);
     }
     
      @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRole(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTypeInteration(@PathVariable Long id) {
         typeInterationServiceImpl.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public TypeInterationDTO updateRole(@PathVariable Long id, @RequestBody TypeInterationDTO typeInterationDTO) {
+    public TypeInterationDTO updateTypeInteration(@PathVariable Long id, @RequestBody TypeInterationDTO typeInterationDTO) {
         typeInterationDTO.setId(id);
         return typeInterationServiceImpl.save(typeInterationDTO);
     }

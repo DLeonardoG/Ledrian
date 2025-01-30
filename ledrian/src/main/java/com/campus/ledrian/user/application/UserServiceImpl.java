@@ -3,6 +3,7 @@ package com.campus.ledrian.user.application;
 import com.campus.ledrian.user.domain.RegisterUserDTO;
 import com.campus.ledrian.user.domain.User;
 import com.campus.ledrian.user.domain.UserRepository;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,14 @@ public class UserServiceImpl {
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;  
     }
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     public User register(RegisterUserDTO registerUserDTO) {

@@ -1,15 +1,21 @@
-
 package com.campus.ledrian.user.domain;
 
+import com.campus.ledrian.follow.domain.Follow;
+import com.campus.ledrian.interaction.domain.Interaction;
+import com.campus.ledrian.publication.domain.Publication;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,6 +25,21 @@ public class User {
     private String password;
     private String photo;
     private String lastname;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Publication> publications;
+
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> followers;
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> following;
+    
+    @OneToMany(mappedBy = "userReceivingInteraction", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Interaction> received;
+    @OneToMany(mappedBy = "userGivingInteraction", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Interaction> delivered;
+    
+    
 
     public User() {
     }
@@ -40,7 +61,6 @@ public class User {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-
 
     public Long getId() {
         return id;
@@ -89,7 +109,47 @@ public class User {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
+    public List<Publication> getPublications() {
+        return publications;
+    }
+
+    public void setPublications(List<Publication> publications) {
+        this.publications = publications;
+    }
+
+    public List<Follow> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<Follow> followers) {
+        this.followers = followers;
+    }
+
+    public List<Follow> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<Follow> following) {
+        this.following = following;
+    }
+
+    public List<Interaction> getReceived() {
+        return received;
+    }
+
+    public void setReceived(List<Interaction> received) {
+        this.received = received;
+    }
+
+    public List<Interaction> getDelivered() {
+        return delivered;
+    }
+
+    public void setDelivered(List<Interaction> delivered) {
+        this.delivered = delivered;
+    }
     
     
-    
+
 }
