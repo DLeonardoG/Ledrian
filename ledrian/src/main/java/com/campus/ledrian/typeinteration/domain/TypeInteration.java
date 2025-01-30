@@ -1,6 +1,6 @@
 package com.campus.ledrian.typeinteration.domain;
 
-import com.campus.ledrian.interaction.domain.Interaction;
+import com.campus.ledrian.interation.domain.Interation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,8 +17,8 @@ public class TypeInteration {
     private Long id;
     private String type;
 
-    @OneToMany(mappedBy = "typeInteraction", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Interaction> interactions;
+    @OneToMany(mappedBy = "typeInteration", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Interation> interactions;
 
     public TypeInteration() {
     }
@@ -44,11 +44,11 @@ public class TypeInteration {
         this.type = type;
     }
 
-    public List<Interaction> getInteractions() {
+    public List<Interation> getInterations() {
         return interactions;
     }
 
-    public void setInteractions(List<Interaction> interactions) {
+    public void setInterations(List<Interation> interactions) {
         this.interactions = interactions;
     }
     

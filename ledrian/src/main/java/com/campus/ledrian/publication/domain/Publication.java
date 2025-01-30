@@ -1,6 +1,6 @@
 package com.campus.ledrian.publication.domain;
 
-import com.campus.ledrian.interaction.domain.Interaction;
+import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.user.domain.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -30,7 +30,7 @@ public class Publication {
     private LocalDateTime date;
 
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Interaction> interactions;
+    private List<Interation> interactions;
 
     public Publication() {
     }
@@ -90,11 +90,11 @@ public class Publication {
         this.date = date;
     }
 
-    public List<Interaction> getInteractions() {
+    public List<Interation> getInterations() {
         return interactions;
     }
 
-    public void setInteractions(List<Interaction> interactions) {
+    public void setInterations(List<Interation> interactions) {
         this.interactions = interactions;
     }
     

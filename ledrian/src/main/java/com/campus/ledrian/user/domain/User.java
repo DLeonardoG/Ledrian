@@ -1,7 +1,7 @@
 package com.campus.ledrian.user.domain;
 
 import com.campus.ledrian.follow.domain.Follow;
-import com.campus.ledrian.interaction.domain.Interaction;
+import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.publication.domain.Publication;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -26,7 +26,7 @@ public class User {
     private String photo;
     private String lastname;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Publication> publications;
 
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -34,10 +34,10 @@ public class User {
     @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> following;
     
-    @OneToMany(mappedBy = "userReceivingInteraction", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Interaction> received;
-    @OneToMany(mappedBy = "userGivingInteraction", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Interaction> delivered;
+    @OneToMany(mappedBy = "userReceivingInteration", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Interation> received;
+    @OneToMany(mappedBy = "userGivingInteration", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Interation> delivered;
     
     
 
@@ -134,19 +134,19 @@ public class User {
         this.following = following;
     }
 
-    public List<Interaction> getReceived() {
+    public List<Interation> getReceived() {
         return received;
     }
 
-    public void setReceived(List<Interaction> received) {
+    public void setReceived(List<Interation> received) {
         this.received = received;
     }
 
-    public List<Interaction> getDelivered() {
+    public List<Interation> getDelivered() {
         return delivered;
     }
 
-    public void setDelivered(List<Interaction> delivered) {
+    public void setDelivered(List<Interation> delivered) {
         this.delivered = delivered;
     }
     

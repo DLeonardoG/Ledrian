@@ -1,6 +1,7 @@
-package com.campus.ledrian.interaction.domain;
+package com.campus.ledrian.interation.domain;
 
 import com.campus.ledrian.publication.domain.Publication;
+import com.campus.ledrian.typeinteration.domain.TypeInteration;
 import com.campus.ledrian.user.domain.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Entity
-public class Interaction {
+public class Interation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,34 +24,34 @@ public class Interaction {
     
     @ManyToOne
     @JoinColumn(name = "user_receiving_id")
-    private User userReceivingInteraction;
+    private User userReceivingInteration;
     
     @ManyToOne
     @JoinColumn(name = "user_giving_id")
-    private User userGivingInteraction;
+    private User userGivingInteration;
 
     @ManyToOne
-    @JoinColumn(name = "type_interaction_id")
-    private Interaction typeInteration;
+    @JoinColumn(name = "type_interation_id")
+    private TypeInteration typeInteration;
 
     private LocalDateTime date;
 
-    public Interaction() {
+    public Interation() {
     }
 
-    public Interaction(Long id, Publication publication, User userReceivingInteraction, User userGivingInteraction, Interaction typeInteration, LocalDateTime date) {
+    public Interation(Long id, Publication publication, User userReceivingInteration, User userGivingInteration, TypeInteration typeInteration, LocalDateTime date) {
         this.id = id;
         this.publication = publication;
-        this.userReceivingInteraction = userReceivingInteraction;
-        this.userGivingInteraction = userGivingInteraction;
+        this.userReceivingInteration = userReceivingInteration;
+        this.userGivingInteration = userGivingInteration;
         this.typeInteration = typeInteration;
         this.date = date;
     }
 
-    public Interaction(Publication publication, User userReceivingInteraction, User userGivingInteraction, Interaction typeInteration, LocalDateTime date) {
+    public Interation(Publication publication, User userReceivingInteration, User userGivingInteration, TypeInteration typeInteration, LocalDateTime date) {
         this.publication = publication;
-        this.userReceivingInteraction = userReceivingInteraction;
-        this.userGivingInteraction = userGivingInteraction;
+        this.userReceivingInteration = userReceivingInteration;
+        this.userGivingInteration = userGivingInteration;
         this.typeInteration = typeInteration;
         this.date = date;
     }
@@ -71,27 +72,27 @@ public class Interaction {
         this.publication = publication;
     }
 
-    public User getUserReceivingInteraction() {
-        return userReceivingInteraction;
+    public User getUserReceivingInteration() {
+        return userReceivingInteration;
     }
 
-    public void setUserReceivingInteraction(User userReceivingInteraction) {
-        this.userReceivingInteraction = userReceivingInteraction;
+    public void setUserReceivingInteration(User userReceivingInteration) {
+        this.userReceivingInteration = userReceivingInteration;
     }
 
-    public User getUserGivingInteraction() {
-        return userGivingInteraction;
+    public User getUserGivingInteration() {
+        return userGivingInteration;
     }
 
-    public void setUserGivingInteraction(User userGivingInteraction) {
-        this.userGivingInteraction = userGivingInteraction;
+    public void setUserGivingInteration(User userGivingInteration) {
+        this.userGivingInteration = userGivingInteration;
     }
 
-    public Interaction getTypeInteraction() {
+    public TypeInteration getTypeInteration() {
         return typeInteration;
     }
 
-    public void setTypeInteraction(Interaction typeInteration) {
+    public void setTypeInteration(TypeInteration typeInteration) {
         this.typeInteration = typeInteration;
     }
 
