@@ -8,6 +8,7 @@ public class RegisterUserDTO {
     private String email;
     private String password;
     private String username;
+    private String photo = "https://cdn-icons-png.freepik.com/512/5997/5997002.png";
 
     public RegisterUserDTO() {
     }
@@ -50,5 +51,13 @@ public class RegisterUserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

@@ -35,6 +35,7 @@ public class UserServiceImpl {
         User.setEmail(registerUserDTO.getEmail());
         User.setUsername(registerUserDTO.getUsername());
         User.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
+        User.setPhoto(registerUserDTO.getPhoto());
 
         return userRepository.save(User);
     }
