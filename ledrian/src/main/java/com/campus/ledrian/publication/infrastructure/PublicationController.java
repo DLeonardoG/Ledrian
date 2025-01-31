@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,24 @@ public class PublicationController {
     @ResponseStatus(HttpStatus.OK)
     public List<PublicationDTO> getAllPublications() {
         return publicationServiceImpl.findAll();
+    }
+
+    @GetMapping("/images/{filename}")
+    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get("uploads/").resolve(filename).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header("Content-Type", Files.probeContentType(filePath))
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     
     @GetMapping("/{id}")
@@ -66,22 +86,24 @@ public class PublicationController {
 
             String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
             Path filePath = uploadPath.resolve(fileName);
+
             Files.copy(photo.getInputStream(), filePath);
 
             PublicationDTO publicationDTO = new PublicationDTO(
                     null,
                     description,
-                    filePath.toString(),
+                    fileName,
                     username,
                     LocalDateTime.now(),
                     publisherId
             );
 
             publicationServiceImpl.save(publicationDTO);
-            return ResponseEntity.ok("Publicación creada exitosamente");
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("Publicación creada exitosamente");
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error al guardar la imagen");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar la imagen");
         }
     }
     
