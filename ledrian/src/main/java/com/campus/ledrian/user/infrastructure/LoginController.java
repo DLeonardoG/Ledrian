@@ -3,8 +3,8 @@ package com.campus.ledrian.user.infrastructure;
 
 import com.campus.ledrian.security.JWTAuthtenticationConfig;
 import com.campus.ledrian.user.application.UserServiceImpl;
+import com.campus.ledrian.user.domain.LoginResponseDTO;
 import com.campus.ledrian.user.domain.User;
-import com.campus.ledrian.user.domain.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class LoginController {
@@ -32,14 +34,38 @@ public class LoginController {
         if (userService.verifyByEmail(email, password)) {
             String token = jwtAuthtenticationConfig.getJWTToken(email);
 
-            UserDTO user = userService.findByEmail(email);
+            User user = userService.findByEmail(email);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("token", token);
-            response.put("user", user);
+            LoginResponseDTO responseDTO = new LoginResponseDTO();
+            responseDTO.setToken(token);
+            responseDTO.setId(user.getId());
+            responseDTO.setName(user.getName());
+            responseDTO.setUsername(user.getUsername());
+            responseDTO.setPhoto(user.getPhoto());
+            responseDTO.setEmail(user.getEmail());
+            responseDTO.setLastname(user.getLastname());
+            responseDTO.setBio(user.getBio());
 
-            return ResponseEntity.ok(response);
+            List<Long> publications = user.getPublications().stream()
+                    .map(publication -> publication.getId())
+                    .collect(Collectors.toList());
+
+            List<Long> followersIds = user.getFollowers().stream()
+                    .map(follow -> follow.getFollower().getId())
+                    .collect(Collectors.toList());
+
+            List<Long> followingIds = user.getFollowing().stream()
+                    .map(follow -> follow.getFollowing().getId())
+                    .collect(Collectors.toList());
+
+            responseDTO.setFollowersIds(followersIds);
+            responseDTO.setFollowingIds(followingIds);
+            responseDTO.setPublications(publications);
+
+            return ResponseEntity.ok(responseDTO);
         }
+
+        // Si las credenciales son incorrectas, devolver un error 401 (No autorizado)
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }

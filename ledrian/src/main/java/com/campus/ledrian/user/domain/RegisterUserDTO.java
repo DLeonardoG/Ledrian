@@ -2,6 +2,8 @@
 
 package com.campus.ledrian.user.domain;
 
+import java.util.List;
+
 public class RegisterUserDTO {
     private String name;
     private String lastname;

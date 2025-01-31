@@ -1,5 +1,6 @@
 package com.campus.ledrian.user.domain;
 
+import com.campus.ledrian.follow.domain.Follow;
 import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.publication.domain.Publication;
 import jakarta.persistence.CascadeType;
@@ -8,9 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import java.util.List;
 
@@ -32,30 +30,22 @@ public class User {
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Publication> publications;
 
-    // Relación de seguidores (followers)
-    @ManyToMany
-    @JoinTable(
-        name = "user_followers",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "follower_id")
-    )
-    private List<User> followers;
-
-    // Relación de seguidos (following)
-    @ManyToMany(mappedBy = "followers")
-    private List<User> following;
-
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> followers;
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> following;
+    
     @OneToMany(mappedBy = "userReceivingInteration", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Interation> received;
-
     @OneToMany(mappedBy = "userGivingInteration", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Interation> delivered;
+    
+    
 
-    // Constructores, getters y setters
     public User() {
     }
 
-    public User(Long id, String name, String email, String username, String password, String photo, String lastname, String bio, List<Publication> publications, List<User> followers, List<User> following, List<Interation> received, List<Interation> delivered) {
+    public User(Long id, String name, String email, String username, String password, String photo, String lastname) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -63,37 +53,30 @@ public class User {
         this.password = password;
         this.photo = photo;
         this.lastname = lastname;
-        this.bio = bio;
-        this.publications = publications;
-        this.followers = followers;
-        this.following = following;
-        this.received = received;
-        this.delivered = delivered;
     }
 
-    // Getters y setters
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getUsername() {
@@ -112,28 +95,28 @@ public class User {
         this.password = password;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPhoto() {
         return photo;
     }
 
     public void setPhoto(String photo) {
         this.photo = photo;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
     }
 
     public List<Publication> getPublications() {
@@ -144,19 +127,19 @@ public class User {
         this.publications = publications;
     }
 
-    public List<User> getFollowers() {
+    public List<Follow> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(List<User> followers) {
+    public void setFollowers(List<Follow> followers) {
         this.followers = followers;
     }
 
-    public List<User> getFollowing() {
+    public List<Follow> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<User> following) {
+    public void setFollowing(List<Follow> following) {
         this.following = following;
     }
 
@@ -175,4 +158,7 @@ public class User {
     public void setDelivered(List<Interation> delivered) {
         this.delivered = delivered;
     }
+    
+    
+
 }

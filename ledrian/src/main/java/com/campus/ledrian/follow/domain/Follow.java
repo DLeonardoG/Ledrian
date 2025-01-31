@@ -43,6 +43,22 @@ public class Follow {
         this.date = date;
     }
 
+    public User getFollower() {
+        return follower;
+    }
+
+    public void setFollower(User follower) {
+        this.follower = follower;
+    }
+
+    public User getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(User following) {
+        this.following = following;
+    }
+
     public Long getId() {
         return id;
     }
