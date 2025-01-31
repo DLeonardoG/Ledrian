@@ -41,17 +41,17 @@ public class UserServiceImpl {
                 .map(this::convertToDTO);
     }
 
-    public User register(RegisterUserDTO registerUserDTO) {
+    public UserDTO register(RegisterUserDTO registerUserDTO) {
 
-        User User = new User();
+        UserDTO User = new UserDTO();
         User.setName(registerUserDTO.getName());
         User.setLastname(registerUserDTO.getLastname());
         User.setEmail(registerUserDTO.getEmail());
         User.setUsername(registerUserDTO.getUsername());
         User.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
         User.setPhoto(registerUserDTO.getPhoto());
-
-        return userRepository.save(User);
+        User savedUser = userRepository.save( convertToEntity(User));
+        return convertToDTO(savedUser);
     }
 
     public boolean verifyByEmail(String email, String password) {
