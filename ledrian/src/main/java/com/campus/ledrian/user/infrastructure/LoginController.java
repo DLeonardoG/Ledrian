@@ -4,6 +4,7 @@ package com.campus.ledrian.user.infrastructure;
 import com.campus.ledrian.security.JWTAuthtenticationConfig;
 import com.campus.ledrian.user.application.UserServiceImpl;
 import com.campus.ledrian.user.domain.User;
+import com.campus.ledrian.user.domain.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class LoginController {
         if (userService.verifyByEmail(email, password)) {
             String token = jwtAuthtenticationConfig.getJWTToken(email);
 
-            User user = userService.findByEmail(email);
+            UserDTO user = userService.findByEmail(email);
 
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
