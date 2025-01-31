@@ -10,13 +10,15 @@ public class PublicationDTO {
     private String photo;
     private String username;
     private LocalDateTime date;
+    private Long publisherId;
 
-    public PublicationDTO(Long id, String description, String photo, String username, LocalDateTime date) {
+    public PublicationDTO(Long id, String description, String photo, String username, LocalDateTime date, Long publisherId) {
         this.id = id;
         this.description = description;
         this.photo = photo;
         this.username = username;
         this.date = date;
+        this.publisherId = publisherId;
     }
 
     public PublicationDTO() {
@@ -27,6 +29,14 @@ public class PublicationDTO {
         this.photo = photo;
         this.username = username;
         this.date = date;
+    }
+
+    public Long getPublisherId() {
+        return publisherId;
+    }
+
+    public void setPublisherId(Long publisherId) {
+        this.publisherId = publisherId;
     }
 
     public Long getId() {

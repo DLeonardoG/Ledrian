@@ -97,6 +97,12 @@ public class Publication {
     public void setInterations(List<Interation> interactions) {
         this.interactions = interactions;
     }
-    
-    
+
+    public User getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
+    }
 }

@@ -38,6 +38,11 @@ public class PublicationController {
     public Optional findById(@PathVariable Long id){
         return publicationServiceImpl.findById(id);
     }
+
+    @GetMapping("/user/{id}")
+    public List<PublicationDTO> findByUserId(@PathVariable Long id){
+        return publicationServiceImpl.findByUserId(id);
+    }
     
     @PostMapping
     public PublicationDTO createPublication(@RequestBody PublicationDTO publicationDTO) {
@@ -48,7 +53,8 @@ public class PublicationController {
     public ResponseEntity<String> createPublicationWithImage(
             @RequestParam("description") String description,
             @RequestParam("photo") MultipartFile photo,
-            @RequestParam("username") String username) {
+            @RequestParam("username") String username,
+            @RequestParam("publisherId") Long publisherId) {
 
         try {
             String uploadDir = "uploads/";
@@ -67,7 +73,8 @@ public class PublicationController {
                     description,
                     filePath.toString(),
                     username,
-                    LocalDateTime.now()
+                    LocalDateTime.now(),
+                    publisherId
             );
 
             publicationServiceImpl.save(publicationDTO);

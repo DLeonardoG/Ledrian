@@ -10,6 +10,7 @@ public interface PublicationService {
    Optional<PublicationDTO> findById(Long id);
    PublicationDTO save(PublicationDTO typeInterationDTO);
    void deleteById(Long id);
+   List<PublicationDTO> findByUserId(Long userId);
 //   Publication(TypeInteration typeInterationDTO);
 //   TypeInteration convertToEntity(Publication);
 }

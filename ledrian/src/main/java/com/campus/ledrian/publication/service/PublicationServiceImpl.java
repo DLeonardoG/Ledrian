@@ -49,13 +49,19 @@ public class PublicationServiceImpl implements PublicationService {
         publicationRepository.deleteById(id);
     }
 
+    @Override
+    public List<PublicationDTO> findByUserId(Long userId) {
+        return publicationRepository.findByUserId(userId).stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
     private PublicationDTO convertToDTO(Publication publication) {
         return new PublicationDTO(
                 publication.getId(),
                 publication.getDescription(),
                 publication.getPhoto(),
                 publication.getUser().getUsername(),
-                publication.getDate()
+                publication.getDate(),
+                publication.getPublisher().getId()
         );
     }
 
