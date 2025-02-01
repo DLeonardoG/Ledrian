@@ -3,6 +3,8 @@ package com.campus.ledrian.user.application;
 import com.campus.ledrian.user.domain.RegisterUserDTO;
 import com.campus.ledrian.user.domain.User;
 import com.campus.ledrian.user.domain.UserRepository;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,5 +57,15 @@ public class UserServiceImpl {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    public List<User> searchUsers(String query) {
+        return userRepository.findByNameContainingOrUsernameContaining(query, query);
+    }
+
+    public User getUserProfile(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
 
 }

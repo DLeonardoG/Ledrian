@@ -65,7 +65,6 @@ public class LoginController {
             return ResponseEntity.ok(responseDTO);
         }
 
-        // Si las credenciales son incorrectas, devolver un error 401 (No autorizado)
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }

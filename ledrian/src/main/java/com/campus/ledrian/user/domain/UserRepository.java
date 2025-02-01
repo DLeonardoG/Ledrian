@@ -12,4 +12,5 @@ public interface UserRepository {
     Optional<User> findByUsername(String username);
     User findByEmail(String email);
     void deleteById(Long id);
+    List<User> findByNameContainingOrUsernameContaining(String name, String username);
 }

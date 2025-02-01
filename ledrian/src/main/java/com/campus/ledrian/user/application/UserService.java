@@ -12,8 +12,8 @@ public interface UserService {
    User saveUser(User user);
    void deleteUser(Long id);
    boolean emailExists(String email);
-
-    User findByEmail(String email);
-
-    User registrar(RegisterUserDTO registerUserDTO);
+   User findByEmail(String email);
+   User registrar(RegisterUserDTO registerUserDTO);
+    List<User> searchUsers(String query); // Buscar usuarios
+    User getUserProfile(Long userId);
 }
