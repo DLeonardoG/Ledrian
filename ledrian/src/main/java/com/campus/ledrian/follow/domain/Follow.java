@@ -67,21 +67,7 @@ public class Follow {
         this.id = id;
     }
 
-    public User getUserFollowed() {
-        return follower;
-    }
 
-    public void setUserFollowed(User follower) {
-        this.follower = follower;
-    }
-
-    public User getUserFollowing() {
-        return following;
-    }
-
-    public void setUserFollowing(User following) {
-        this.following = following;
-    }
 
     public LocalDateTime getDate() {
         return date;

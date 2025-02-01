@@ -3,6 +3,7 @@ package com.campus.ledrian.user.infrastructure;
 import com.campus.ledrian.user.application.UserService;
 import com.campus.ledrian.user.application.UserServiceImpl;
 import com.campus.ledrian.user.domain.User;
+import com.campus.ledrian.user.domain.UserDTO;
 import com.campus.ledrian.user.domain.UserProfileDTO;
 import com.campus.ledrian.user.domain.UserSearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,19 @@ public class UserController {
                         user.getPhoto()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/followings/{userId}")
+    public UserProfileDTO getFollowingCard(@PathVariable long userId) {
+        User user = userService.getUserProfile(userId);
+
+        UserProfileDTO userProfileDTO = new UserProfileDTO();
+        userProfileDTO.setId(user.getId());
+        userProfileDTO.setName(user.getName());
+        userProfileDTO.setLastname(user.getLastname());
+        userProfileDTO.setUsername(user.getUsername());
+        userProfileDTO.setPhoto(user.getPhoto());
+        return userProfileDTO;
     }
 
     @GetMapping("/{userId}")

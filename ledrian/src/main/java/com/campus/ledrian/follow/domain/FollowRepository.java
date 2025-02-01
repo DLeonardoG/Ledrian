@@ -15,5 +15,7 @@ public interface FollowRepository {
 
     void deleteByFollowerIdAndFollowingId(Long followerId, Long followingId);
 
+    void deleteByFollower_IdAndFollowing_Id(Long followerId, Long followingId);
+
 //    Follow findBy(String publi);
 }

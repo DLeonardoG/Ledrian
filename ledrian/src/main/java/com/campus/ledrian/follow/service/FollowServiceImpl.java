@@ -48,7 +48,7 @@ public class FollowServiceImpl implements FollowService {
     @Transactional
     @Override
     public void unfollow(Long followerId, Long followingId) {
-        followRepository.deleteByFollowerIdAndFollowingId(followerId, followingId);
+        followRepository.deleteByFollower_IdAndFollowing_Id(followerId, followingId);
     }
 
     @Override
@@ -59,21 +59,24 @@ public class FollowServiceImpl implements FollowService {
     private FollowDTO convertToDTO(Follow follow) {
         return new FollowDTO(
                 follow.getId(),
-                follow.getUserFollowed().getId(),
-                follow.getUserFollowing().getId(),
+                follow.getFollower().getId(),
+                follow.getFollowing().getId(),
                 follow.getDate()
         );
     }
     private Follow convertToEntity(FollowDTO followDTO) {
         Follow follow = new Follow();
         follow.setId(followDTO.getId());
-        User userFollowed = userRepository.findById(followDTO.getUsernameFollowedId())
-                .orElseThrow(() -> new IllegalArgumentException("user not found"));;
-        follow.setUserFollowed(userFollowed);
 
+        // Aquí se debe asignar "follower" como el usuario que sigue (loggedUser)
         User userFollowing = userRepository.findById(followDTO.getUsernameFollowingId())
-                .orElseThrow(() -> new IllegalArgumentException("user not found"));;
-        follow.setUserFollowing(userFollowing);
+                .orElseThrow(() -> new IllegalArgumentException("user not found"));
+        follow.setFollower(userFollowing);
+
+        // Y "following" como el usuario que es seguido (usuario)
+        User userFollowed = userRepository.findById(followDTO.getUsernameFollowedId())
+                .orElseThrow(() -> new IllegalArgumentException("user not found"));
+        follow.setFollowing(userFollowed);
         
         follow.setDate(followDTO.getDate());
         if (followDTO.getUsernameFollowedId().equals(followDTO.getUsernameFollowingId())) {
