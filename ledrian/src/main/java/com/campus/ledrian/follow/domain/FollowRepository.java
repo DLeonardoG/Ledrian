@@ -13,5 +13,7 @@ public interface FollowRepository {
 
     void deleteById(Long id);
 
+    void deleteByFollowerIdAndFollowingId(Long followerId, Long followingId);
+
 //    Follow findBy(String publi);
 }

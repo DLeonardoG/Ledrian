@@ -37,11 +37,17 @@ public class FollowServiceImpl implements FollowService {
 
     }
 
+
     @Override
     public FollowDTO save(FollowDTO followDTO) {
         Follow follow = convertToEntity(followDTO);
         Follow savedFollow = followRepository.save(follow);
         return convertToDTO(savedFollow);
+    }
+
+    @Override
+    public void unfollow(Long followerId, Long followingId) {
+        followRepository.deleteByFollowerIdAndFollowingId(followerId, followingId);
     }
 
     @Override
@@ -52,19 +58,19 @@ public class FollowServiceImpl implements FollowService {
     private FollowDTO convertToDTO(Follow follow) {
         return new FollowDTO(
                 follow.getId(),
-                follow.getUserFollowed().getUsername(),
-                follow.getUserFollowing().getUsername(),
+                follow.getUserFollowed().getId(),
+                follow.getUserFollowing().getId(),
                 follow.getDate()
         );
     }
     private Follow convertToEntity(FollowDTO followDTO) {
         Follow follow = new Follow();
         follow.setId(followDTO.getId());
-        User userFollowed = userRepository.findByUsername(followDTO.getUsernameFollowed())
+        User userFollowed = userRepository.findById(followDTO.getUsernameFollowedId())
                 .orElseThrow(() -> new IllegalArgumentException("user not found"));;
         follow.setUserFollowed(userFollowed);
 
-        User userFollowing = userRepository.findByUsername(followDTO.getUsernameFollowing())
+        User userFollowing = userRepository.findById(followDTO.getUsernameFollowingId())
                 .orElseThrow(() -> new IllegalArgumentException("user not found"));;
         follow.setUserFollowing(userFollowing);
         

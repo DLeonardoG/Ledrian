@@ -6,23 +6,23 @@ import java.time.LocalDateTime;
 
 public class FollowDTO {
     private Long id;
-    private String usernameFollowed;
-    private String usernameFollowing;
+    private Long usernameFollowedId;
+    private Long usernameFollowingId;
     private LocalDateTime date;
 
     public FollowDTO() {
     }
 
-    public FollowDTO(Long id, String usernameFollowed, String usernameFollowing, LocalDateTime date) {
+    public FollowDTO(Long id, Long usernameFollowedId, Long usernameFollowingId, LocalDateTime date) {
         this.id = id;
-        this.usernameFollowed = usernameFollowed;
-        this.usernameFollowing = usernameFollowing;
+        this.usernameFollowedId = usernameFollowedId;
+        this.usernameFollowingId = usernameFollowingId;
         this.date = date;
     }
 
-    public FollowDTO(String usernameFollowed, String usernameFollowing, LocalDateTime date) {
-        this.usernameFollowed = usernameFollowed;
-        this.usernameFollowing = usernameFollowing;
+    public FollowDTO(Long usernameFollowedId, Long usernameFollowingId, LocalDateTime date) {
+        this.usernameFollowedId = usernameFollowedId;
+        this.usernameFollowingId = usernameFollowingId;
         this.date = date;
     }
 
@@ -34,20 +34,20 @@ public class FollowDTO {
         this.id = id;
     }
 
-    public String getUsernameFollowed() {
-        return usernameFollowed;
+    public Long getUsernameFollowedId() {
+        return usernameFollowedId;
     }
 
-    public void setUsernameFollowed(String usernameFollowed) {
-        this.usernameFollowed = usernameFollowed;
+    public void setUsernameFollowedId(Long usernameFollowedId) {
+        this.usernameFollowedId = usernameFollowedId;
     }
 
-    public String getUsernameFollowing() {
-        return usernameFollowing;
+    public Long getUsernameFollowingId() {
+        return usernameFollowingId;
     }
 
-    public void setUsernameFollowing(String usernameFollowing) {
-        this.usernameFollowing = usernameFollowing;
+    public void setUsernameFollowingId(Long usernameFollowingId) {
+        this.usernameFollowingId = usernameFollowingId;
     }
 
     public LocalDateTime getDate() {
