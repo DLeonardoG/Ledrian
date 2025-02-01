@@ -51,11 +51,11 @@ public class LoginController {
                     .collect(Collectors.toList());
 
             List<Long> followersIds = user.getFollowers().stream()
-                    .map(follow -> follow.getFollower().getId())
+                    .map(follow -> follow.getFollowing().getId())
                     .collect(Collectors.toList());
 
             List<Long> followingIds = user.getFollowing().stream()
-                    .map(follow -> follow.getFollowing().getId())
+                    .map(follow -> follow.getFollower().getId())
                     .collect(Collectors.toList());
 
             responseDTO.setFollowersIds(followersIds);

@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class FollowServiceImpl implements FollowService {
@@ -37,7 +38,6 @@ public class FollowServiceImpl implements FollowService {
 
     }
 
-
     @Override
     public FollowDTO save(FollowDTO followDTO) {
         Follow follow = convertToEntity(followDTO);
@@ -45,6 +45,7 @@ public class FollowServiceImpl implements FollowService {
         return convertToDTO(savedFollow);
     }
 
+    @Transactional
     @Override
     public void unfollow(Long followerId, Long followingId) {
         followRepository.deleteByFollowerIdAndFollowingId(followerId, followingId);
@@ -75,6 +76,9 @@ public class FollowServiceImpl implements FollowService {
         follow.setUserFollowing(userFollowing);
         
         follow.setDate(followDTO.getDate());
+        if (followDTO.getUsernameFollowedId().equals(followDTO.getUsernameFollowingId())) {
+            throw new IllegalArgumentException("Un usuario no puede seguirse a sí mismo.");
+        }
 
         return follow;
     }

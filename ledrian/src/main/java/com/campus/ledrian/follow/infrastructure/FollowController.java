@@ -43,7 +43,6 @@ public class FollowController {
         return ResponseEntity.noContent().build();
     }
 
-    // Nuevo endpoint para dejar de seguir a un usuario
     @DeleteMapping("/unfollow")
     public ResponseEntity<Void> unfollow(
             @RequestParam Long followerId,

@@ -14,5 +14,5 @@ public interface FollowService {
 
     void deleteById(Long id);
 
-    public void unfollow(Long followerId, Long followingId);
+    void unfollow(Long followerId, Long followingId);
 }
