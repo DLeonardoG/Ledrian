@@ -68,12 +68,10 @@ public class FollowServiceImpl implements FollowService {
         Follow follow = new Follow();
         follow.setId(followDTO.getId());
 
-        // Aquí se debe asignar "follower" como el usuario que sigue (loggedUser)
         User userFollowing = userRepository.findById(followDTO.getUsernameFollowingId())
                 .orElseThrow(() -> new IllegalArgumentException("user not found"));
         follow.setFollower(userFollowing);
 
-        // Y "following" como el usuario que es seguido (usuario)
         User userFollowed = userRepository.findById(followDTO.getUsernameFollowedId())
                 .orElseThrow(() -> new IllegalArgumentException("user not found"));
         follow.setFollowing(userFollowed);

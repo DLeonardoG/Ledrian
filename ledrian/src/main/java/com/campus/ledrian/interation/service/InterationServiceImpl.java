@@ -73,7 +73,7 @@ public class InterationServiceImpl implements InterationService {
         Interation interaction = new Interation();
         interaction.setId(interationDTO.getId());
 
-        Publication publication = publicationRepository.findById(interationDTO.getId())
+        Publication publication = publicationRepository.findById(interationDTO.getIdPublication())
                 .orElseThrow(() -> new IllegalArgumentException("publi not found"));;
         interaction.setPublication(publication);
 
