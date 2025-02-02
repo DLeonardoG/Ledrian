@@ -1,5 +1,6 @@
 package com.campus.ledrian.user.domain;
 
+import com.campus.ledrian.chat.domain.ChatMessage;
 import com.campus.ledrian.follow.domain.Follow;
 import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.publication.domain.Publication;
@@ -10,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,6 +41,12 @@ public class User {
     private List<Interation> received;
     @OneToMany(mappedBy = "userGivingInteration", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Interation> delivered;
+    
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatMessage> sentMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatMessage> receivedMessages = new ArrayList<>();
     
     
 

@@ -32,6 +32,8 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, Constants.LOGIN_URL).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll() // Permitir acceso al endpoint de WebSocket
+                        .requestMatchers("/user/**").permitAll() // Permitir acceso a los destinos de usuario
                         .anyRequest().authenticated())
                 .addFilterAfter(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -53,6 +55,9 @@ public class WebSecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
+        source.registerCorsConfiguration("/ws/**", configuration);
+        source.registerCorsConfiguration("/user/**", configuration);
         return source;
     }
 }

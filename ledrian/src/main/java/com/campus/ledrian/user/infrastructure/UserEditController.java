@@ -21,10 +21,10 @@ public class UserEditController {
         this.userService = userService;
     }
     
-    @PutMapping("{userId}")
-    public UserEditDTO updateUserProfile(@PathVariable Long userId, @RequestBody UserEditDTO userEditDTO) {
-        userEditDTO.setId(userId);
-        return userService.saveEditProf(userEditDTO);
-    }
+        @PutMapping("/{userId}")
+        public UserEditDTO updateUserProfile(@PathVariable Long userId, @RequestBody UserEditDTO userEditDTO) {
+            userEditDTO.setId(userId);
+            return userService.saveEditProf(userEditDTO);
+        }
 
 }
