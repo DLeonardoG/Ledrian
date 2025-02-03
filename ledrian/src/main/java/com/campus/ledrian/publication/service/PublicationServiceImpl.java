@@ -1,5 +1,8 @@
 package com.campus.ledrian.publication.service;
 
+import com.campus.ledrian.interation.domain.Interation;
+import com.campus.ledrian.interation.domain.InterationDTO;
+import com.campus.ledrian.interation.domain.InterationRepository;
 import com.campus.ledrian.publication.domain.Publication;
 import com.campus.ledrian.publication.domain.PublicationDTO;
 import com.campus.ledrian.publication.domain.PublicationRepository;
@@ -16,11 +19,13 @@ public class PublicationServiceImpl implements PublicationService {
 
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
+    private final InterationRepository interationRepository;
 
     @Autowired
-    public PublicationServiceImpl(PublicationRepository publicationRepository, UserRepository userRepository) {
+    public PublicationServiceImpl(PublicationRepository publicationRepository, UserRepository userRepository, InterationRepository interationRepository) {
         this.publicationRepository = publicationRepository;
         this.userRepository = userRepository;
+        this.interationRepository = interationRepository;
     }
 
     @Override
@@ -55,13 +60,29 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     private PublicationDTO convertToDTO(Publication publication) {
+        // Obtener interacciones de la publicación
+        List<Interation> interaciones = interationRepository.findByPublicationId(publication.getId());
+
+        // Convertir a DTOs
+        List<InterationDTO> interationDTOs = interaciones.stream()
+                .map(interation -> new InterationDTO(
+                        interation.getId(),
+                        interation.getPublication().getId(),
+                        interation.getUserGivingInteration().getId(),
+                        interation.getUserReceivingInteration().getId(),
+                        interation.getTypeInteration().getId(),
+                        interation.getDate()
+                ))
+                .collect(Collectors.toList());
+
         return new PublicationDTO(
                 publication.getId(),
                 publication.getDescription(),
                 publication.getPhoto(),
                 publication.getUser().getUsername(),
                 publication.getDate(),
-                publication.getPublisher().getId()
+                publication.getPublisher().getId(),
+                interationDTOs
         );
     }
 

@@ -1,7 +1,10 @@
 
 package com.campus.ledrian.publication.domain;
 
+import com.campus.ledrian.interation.domain.InterationDTO;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 public class PublicationDTO {
@@ -11,6 +14,17 @@ public class PublicationDTO {
     private String username;
     private LocalDateTime date;
     private Long publisherId;
+    private List<InterationDTO> interations;
+
+    public PublicationDTO(Long id, String description, String photo, String username, LocalDateTime date, Long publisherId, List<InterationDTO> interations) {
+        this.id = id;
+        this.description = description;
+        this.photo = photo;
+        this.username = username;
+        this.date = date;
+        this.publisherId = publisherId;
+        this.interations = interations;
+    }
 
     public PublicationDTO(Long id, String description, String photo, String username, LocalDateTime date, Long publisherId) {
         this.id = id;
@@ -29,6 +43,14 @@ public class PublicationDTO {
         this.photo = photo;
         this.username = username;
         this.date = date;
+    }
+
+    public List<InterationDTO> getInterations() {
+        return interations;
+    }
+
+    public void setInterations(List<InterationDTO> interations) {
+        this.interations = interations;
     }
 
     public Long getPublisherId() {
