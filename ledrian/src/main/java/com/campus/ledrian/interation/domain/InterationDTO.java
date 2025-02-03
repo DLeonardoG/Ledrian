@@ -5,29 +5,21 @@ import java.time.LocalDateTime;
 public class InterationDTO {
 
     private Long id;
-    private Long idPublication;
-    private String userReceivingInteration;
-    private String userGivingInteration;
-    private String type;
+    private Long publicationId;
+    private Long userGivingId;
+    private Long userReceivingId;
+    private Long typeInterationId;
     private LocalDateTime date;
 
     public InterationDTO() {
     }
 
-    public InterationDTO(Long id, Long idPublication, String userReceivingInteration, String userGivingInteration, String type, LocalDateTime date) {
+    public InterationDTO(Long id, Long publicationId, Long userGivingId, Long userReceivingId, Long typeInterationId, LocalDateTime date) {
         this.id = id;
-        this.idPublication = idPublication;
-        this.userReceivingInteration = userReceivingInteration;
-        this.userGivingInteration = userGivingInteration;
-        this.type = type;
-        this.date = date;
-    }
-
-    public InterationDTO(Long idPublication, String userReceivingInteration, String userGivingInteration, String type, LocalDateTime date) {
-        this.idPublication = idPublication;
-        this.userReceivingInteration = userReceivingInteration;
-        this.userGivingInteration = userGivingInteration;
-        this.type = type;
+        this.publicationId = publicationId;
+        this.userGivingId = userGivingId;
+        this.userReceivingId = userReceivingId;
+        this.typeInterationId = typeInterationId;
         this.date = date;
     }
 
@@ -39,36 +31,36 @@ public class InterationDTO {
         this.id = id;
     }
 
-    public Long getIdPublication() {
-        return idPublication;
+    public Long getPublicationId() {
+        return publicationId;
     }
 
-    public void setIdPublication(Long idPublication) {
-        this.idPublication = idPublication;
+    public void setPublicationId(Long publicationId) {
+        this.publicationId = publicationId;
     }
 
-    public String getUserReceivingInteration() {
-        return userReceivingInteration;
+    public Long getUserGivingId() {
+        return userGivingId;
     }
 
-    public void setUserReceivingInteration(String userReceivingInteration) {
-        this.userReceivingInteration = userReceivingInteration;
+    public void setUserGivingId(Long userGivingId) {
+        this.userGivingId = userGivingId;
     }
 
-    public String getUserGivingInteration() {
-        return userGivingInteration;
+    public Long getUserReceivingId() {
+        return userReceivingId;
     }
 
-    public void setUserGivingInteration(String userGivingInteration) {
-        this.userGivingInteration = userGivingInteration;
+    public void setUserReceivingId(Long userReceivingId) {
+        this.userReceivingId = userReceivingId;
     }
 
-    public String getType() {
-        return type;
+    public Long getTypeInterationId() {
+        return typeInterationId;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeInterationId(Long typeInterationId) {
+        this.typeInterationId = typeInterationId;
     }
 
     public LocalDateTime getDate() {
@@ -78,5 +70,4 @@ public class InterationDTO {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
-
 }

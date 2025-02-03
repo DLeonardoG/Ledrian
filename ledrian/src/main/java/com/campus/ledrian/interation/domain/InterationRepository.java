@@ -12,4 +12,6 @@ public interface InterationRepository {
     Optional<Interation> findById(Long id);
 
     void deleteById(Long id);
+
+    List<Interation> findByPublicationId(Long publicationId);
 }

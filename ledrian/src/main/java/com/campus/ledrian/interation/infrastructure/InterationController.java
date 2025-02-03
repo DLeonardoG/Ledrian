@@ -28,33 +28,45 @@ public class InterationController {
     public InterationController(InterationServiceImpl interationServiceImpl) {
         this.interationServiceImpl = interationServiceImpl;
     }
-    
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<InterationDTO> getAllInterations() {
         return interationServiceImpl.findAll();
     }
-    
+
     @GetMapping("/{id}")
-    public Optional findById(@PathVariable Long id){
-        return interationServiceImpl.findById(id);
+    public ResponseEntity<InterationDTO> getInterationById(@PathVariable Long id) {
+        Optional<InterationDTO> interationDTO = interationServiceImpl.findById(id);
+        return interationDTO.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    
+
     @PostMapping
-    public InterationDTO createInteration(@RequestBody InterationDTO interationDTO) {
-        return interationServiceImpl.save(interationDTO);
-    }
-    
-     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteInteration(@PathVariable Long id) {
-        interationServiceImpl.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<InterationDTO> createInteration(@RequestBody InterationDTO interationDTO) {
+        if (interationDTO == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        InterationDTO savedInteration = interationServiceImpl.save(interationDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedInteration);
     }
 
     @PutMapping("/{id}")
-    public InterationDTO updateInteration(@PathVariable Long id, @RequestBody InterationDTO interationDTO) {
+    public ResponseEntity<InterationDTO> updateInteration(@PathVariable Long id, @RequestBody InterationDTO interationDTO) {
+        if (interationDTO == null || id == null) {
+            return ResponseEntity.badRequest().build();
+        }
         interationDTO.setId(id);
-        return interationServiceImpl.save(interationDTO);
+        InterationDTO updatedInteration = interationServiceImpl.save(interationDTO);
+        return ResponseEntity.ok(updatedInteration);
     }
-    
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteInteration(@PathVariable Long id) {
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        interationServiceImpl.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

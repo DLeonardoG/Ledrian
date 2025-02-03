@@ -14,4 +14,5 @@ public interface TypeInterationRepository {
     void deleteById(Long id);
 
     Optional<TypeInteration> findByType(String type);
+
 }
