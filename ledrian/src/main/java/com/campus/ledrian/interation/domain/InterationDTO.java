@@ -10,8 +10,19 @@ public class InterationDTO {
     private Long userReceivingId;
     private Long typeInterationId;
     private LocalDateTime date;
+    private String comment;
 
     public InterationDTO() {
+    }
+
+    public InterationDTO(Long id, Long publicationId, Long userGivingId, Long userReceivingId, Long typeInterationId, LocalDateTime date, String comment) {
+        this.id = id;
+        this.publicationId = publicationId;
+        this.userGivingId = userGivingId;
+        this.userReceivingId = userReceivingId;
+        this.typeInterationId = typeInterationId;
+        this.date = date;
+        this.comment = comment;
     }
 
     public InterationDTO(Long id, Long publicationId, Long userGivingId, Long userReceivingId, Long typeInterationId, LocalDateTime date) {
@@ -21,6 +32,14 @@ public class InterationDTO {
         this.userReceivingId = userReceivingId;
         this.typeInterationId = typeInterationId;
         this.date = date;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Long getId() {

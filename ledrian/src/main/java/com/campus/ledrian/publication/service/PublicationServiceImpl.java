@@ -60,10 +60,8 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     private PublicationDTO convertToDTO(Publication publication) {
-        // Obtener interacciones de la publicación
         List<Interation> interaciones = interationRepository.findByPublicationId(publication.getId());
 
-        // Convertir a DTOs
         List<InterationDTO> interationDTOs = interaciones.stream()
                 .map(interation -> new InterationDTO(
                         interation.getId(),
@@ -71,7 +69,8 @@ public class PublicationServiceImpl implements PublicationService {
                         interation.getUserGivingInteration().getId(),
                         interation.getUserReceivingInteration().getId(),
                         interation.getTypeInteration().getId(),
-                        interation.getDate()
+                        interation.getDate(),
+                        interation.getComment()
                 ))
                 .collect(Collectors.toList());
 

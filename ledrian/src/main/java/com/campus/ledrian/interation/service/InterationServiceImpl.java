@@ -61,15 +61,7 @@ public class InterationServiceImpl implements InterationService {
         return convertToDTO(savedInteration);
     }
 
-    public CommentDTO saveComment(CommentDTO commentDTO) {
-        if (commentDTO == null) {
-            throw new IllegalArgumentException("El DTO de commento no puede ser nulo");
-        }
-        Interation interation = convertCommentToEntity(commentDTO);
-        Interation savedInteration = interationRepository.save(interation);
-        return convertCommentToDTO(savedInteration);
 
-    }
 
     @Override
     public void deleteById(Long id) {
@@ -127,6 +119,8 @@ public class InterationServiceImpl implements InterationService {
         interation.setTypeInteration(typeInteration);
 
         interation.setDate(interationDTO.getDate());
+
+        interation.setComment(interationDTO.getComment());
 
         return interation;
     }

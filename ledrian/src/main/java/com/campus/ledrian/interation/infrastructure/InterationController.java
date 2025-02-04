@@ -51,15 +51,6 @@ public class InterationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedInteration);
     }
 
-    @PostMapping("/comment")
-    public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO) {
-        if (commentDTO == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        CommentDTO savedInteration = interationServiceImpl.saveComment(commentDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedInteration);
-    }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<InterationDTO> updateInteration(@PathVariable Long id, @RequestBody InterationDTO interationDTO) {
