@@ -36,6 +36,8 @@ public class Interation {
 
     private LocalDateTime date;
 
+    private String comment;
+
     public Interation() {
     }
 
@@ -46,6 +48,16 @@ public class Interation {
         this.userGivingInteration = userGivingInteration;
         this.typeInteration = typeInteration;
         this.date = date;
+    }
+
+    public Interation(Long id, Publication publication, User userReceivingInteration, User userGivingInteration, TypeInteration typeInteration, LocalDateTime date, String comment) {
+        this.id = id;
+        this.publication = publication;
+        this.userReceivingInteration = userReceivingInteration;
+        this.userGivingInteration = userGivingInteration;
+        this.typeInteration = typeInteration;
+        this.date = date;
+        this.comment = comment;
     }
 
     public Interation(Publication publication, User userReceivingInteration, User userGivingInteration, TypeInteration typeInteration, LocalDateTime date) {
@@ -103,6 +115,12 @@ public class Interation {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
-    
-    
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

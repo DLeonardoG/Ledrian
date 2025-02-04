@@ -33,8 +33,8 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/doc/swagger-ui.html").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
-                        .requestMatchers("/ws/**").permitAll() // Permitir acceso al endpoint de WebSocket
-                        .requestMatchers("/user/**").permitAll() // Permitir acceso a los destinos de usuario
+                        .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/user/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterAfter(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 

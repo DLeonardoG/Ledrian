@@ -1,32 +1,32 @@
 
 package com.campus.ledrian.interation.infrastructure;
 
+import com.campus.ledrian.interation.domain.CommentDTO;
+import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.interation.domain.InterationDTO;
+import com.campus.ledrian.interation.domain.InterationRepository;
 import com.campus.ledrian.interation.service.InterationServiceImpl;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/interations")
 public class InterationController {
 
     private final InterationServiceImpl interationServiceImpl;
+    private final InterationRepository interationRepository;
 
     @Autowired
-    public InterationController(InterationServiceImpl interationServiceImpl) {
+    public InterationController(InterationServiceImpl interationServiceImpl, InterationRepository interationRepository) {
         this.interationServiceImpl = interationServiceImpl;
+        this.interationRepository = interationRepository;
     }
 
     @GetMapping
@@ -51,6 +51,16 @@ public class InterationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedInteration);
     }
 
+    @PostMapping("/comment")
+    public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO) {
+        if (commentDTO == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        CommentDTO savedInteration = interationServiceImpl.saveComment(commentDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedInteration);
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<InterationDTO> updateInteration(@PathVariable Long id, @RequestBody InterationDTO interationDTO) {
         if (interationDTO == null || id == null) {
@@ -68,5 +78,23 @@ public class InterationController {
         }
         interationServiceImpl.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/check-like")
+    public ResponseEntity<Map<String, Object>> checkIfUserLikedPost(
+            @RequestParam Long userId,
+            @RequestParam Long postId) {
+
+        Optional<Interation> interaction = interationRepository.findByUserGivingIdAndPublicationIdAndTypeInterationId(
+                userId,
+                postId,
+                1L
+        );
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("hasLiked", interaction.isPresent());
+        interaction.ifPresent(i -> response.put("interactionId", i.getId()));
+
+        return ResponseEntity.ok(response);
     }
 }

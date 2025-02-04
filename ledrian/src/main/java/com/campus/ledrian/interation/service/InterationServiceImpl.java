@@ -1,5 +1,6 @@
 package com.campus.ledrian.interation.service;
 
+import com.campus.ledrian.interation.domain.CommentDTO;
 import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.interation.domain.InterationDTO;
 import com.campus.ledrian.interation.domain.InterationRepository;
@@ -14,6 +15,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.xml.stream.events.Comment;
 
 @Service
 public class InterationServiceImpl implements InterationService {
@@ -58,6 +61,16 @@ public class InterationServiceImpl implements InterationService {
         return convertToDTO(savedInteration);
     }
 
+    public CommentDTO saveComment(CommentDTO commentDTO) {
+        if (commentDTO == null) {
+            throw new IllegalArgumentException("El DTO de commento no puede ser nulo");
+        }
+        Interation interation = convertCommentToEntity(commentDTO);
+        Interation savedInteration = interationRepository.save(interation);
+        return convertCommentToDTO(savedInteration);
+
+    }
+
     @Override
     public void deleteById(Long id) {
         if (id == null) {
@@ -74,6 +87,18 @@ public class InterationServiceImpl implements InterationService {
                 interation.getUserReceivingInteration().getId(),
                 interation.getTypeInteration().getId(),
                 interation.getDate()
+        );
+    }
+
+    private CommentDTO convertCommentToDTO(Interation interation) {
+        return new CommentDTO(
+                interation.getId(),
+                interation.getPublication().getId(),
+                interation.getUserGivingInteration().getId(),
+                interation.getUserReceivingInteration().getId(),
+                interation.getTypeInteration().getId(),
+                interation.getDate(),
+                interation.getComment()
         );
     }
 
@@ -102,6 +127,37 @@ public class InterationServiceImpl implements InterationService {
         interation.setTypeInteration(typeInteration);
 
         interation.setDate(interationDTO.getDate());
+
+        return interation;
+    }
+
+    private Interation convertCommentToEntity(CommentDTO commentDTO) {
+        if (commentDTO == null) {
+            throw new IllegalArgumentException("El DTO de interacción no puede ser nulo");
+        }
+
+        Interation interation = new Interation();
+        interation.setId(commentDTO.getId());
+
+        Publication publication = publicationRepository.findById(commentDTO.getPublicationId())
+                .orElseThrow(() -> new IllegalArgumentException("Publicación no encontrada con ID: " + commentDTO.getPublicationId()));
+        interation.setPublication(publication);
+
+        User userGiving = userRepository.findById(commentDTO.getUserGivingId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario que da la interacción no encontrado con ID: " + commentDTO.getUserGivingId()));
+        interation.setUserGivingInteration(userGiving);
+
+        User userReceiving = userRepository.findById(commentDTO.getUserReceivingId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario que recibe la interacción no encontrado con ID: " + commentDTO.getUserReceivingId()));
+        interation.setUserReceivingInteration(userReceiving);
+
+        TypeInteration typeInteration = typeInterationRepository.findById(commentDTO.getTypeInterationId())
+                .orElseThrow(() -> new IllegalArgumentException("Tipo de interacción no encontrado con ID: " + commentDTO.getTypeInterationId()));
+        interation.setTypeInteration(typeInteration);
+
+        interation.setDate(commentDTO.getDate());
+
+        interation.setComment(commentDTO.getComment());
 
         return interation;
     }
