@@ -4,6 +4,7 @@ import com.campus.ledrian.follow.domain.Follow;
 import com.campus.ledrian.follow.domain.FollowRepository;
 import com.campus.ledrian.publication.domain.Publication;
 import com.campus.ledrian.publication.domain.PublicationRepository;
+import com.campus.ledrian.user.domain.LoginResponseDTO;
 import com.campus.ledrian.user.domain.RegisterUserDTO;
 import com.campus.ledrian.user.domain.User;
 import com.campus.ledrian.user.domain.UserEditDTO;
@@ -53,6 +54,45 @@ public class UserServiceImpl {
         User.setPhoto(registerUserDTO.getPhoto());
 
         return userRepository.save(User);
+    }
+
+    public User edit(LoginResponseDTO loginResponseDTO) {
+
+        User user = new User();
+        user.setName(loginResponseDTO.getName());
+        user.setLastname(loginResponseDTO.getLastname());
+        user.setEmail(loginResponseDTO.getEmail());
+        user.setUsername(loginResponseDTO.getUsername());
+        user.setPhoto(loginResponseDTO.getPhoto());
+        user.setBio(loginResponseDTO.getBio());
+
+        if (loginResponseDTO.getPublications() != null) {
+            List<Publication> publications = loginResponseDTO.getPublications().stream()
+                    .map(publicationRepo::findById) 
+                    .filter(Optional::isPresent)
+                    .map(Optional::get) 
+                    .collect(Collectors.toList());
+            user.setPublications(publications);
+        }
+
+        if (loginResponseDTO.getFollowersIds()!= null) {
+            List<Follow> followers = loginResponseDTO.getFollowersIds().stream()
+                    .map(followRepository::findById) 
+                    .filter(Optional::isPresent)
+                    .map(Optional::get) 
+                    .collect(Collectors.toList());
+            user.setFollowers(followers);
+        }
+        if (loginResponseDTO.getFollowingIds()!= null) {
+            List<Follow> following = loginResponseDTO.getFollowingIds().stream()
+                    .map(followRepository::findById) 
+                    .filter(Optional::isPresent)
+                    .map(Optional::get) 
+                    .collect(Collectors.toList());
+            user.setFollowers(following);
+        }
+
+        return userRepository.save(user);
     }
 
     public boolean verifyByEmail(String email, String password) {
