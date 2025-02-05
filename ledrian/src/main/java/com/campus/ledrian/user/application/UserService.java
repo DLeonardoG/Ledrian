@@ -1,6 +1,7 @@
 
 package com.campus.ledrian.user.application;
 
+import com.campus.ledrian.user.domain.LoginResponseDTO;
 import com.campus.ledrian.user.domain.RegisterUserDTO;
 import com.campus.ledrian.user.domain.User;
 import java.util.List;
@@ -16,4 +17,5 @@ public interface UserService {
    User registrar(RegisterUserDTO registerUserDTO);
     List<User> searchUsers(String query); // Buscar usuarios
     User getUserProfile(Long userId);
+    User editUser(long userId, LoginResponseDTO loginResponseDTO);
 }

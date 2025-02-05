@@ -56,41 +56,17 @@ public class UserServiceImpl {
         return userRepository.save(User);
     }
 
-    public User edit(LoginResponseDTO loginResponseDTO) {
 
-        User user = new User();
+
+    public User edit(long userId, LoginResponseDTO loginResponseDTO) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
         user.setName(loginResponseDTO.getName());
         user.setLastname(loginResponseDTO.getLastname());
         user.setEmail(loginResponseDTO.getEmail());
         user.setUsername(loginResponseDTO.getUsername());
-        user.setPhoto(loginResponseDTO.getPhoto());
         user.setBio(loginResponseDTO.getBio());
-
-        if (loginResponseDTO.getPublications() != null) {
-            List<Publication> publications = loginResponseDTO.getPublications().stream()
-                    .map(publicationRepo::findById) 
-                    .filter(Optional::isPresent)
-                    .map(Optional::get) 
-                    .collect(Collectors.toList());
-            user.setPublications(publications);
-        }
-
-        if (loginResponseDTO.getFollowersIds()!= null) {
-            List<Follow> followers = loginResponseDTO.getFollowersIds().stream()
-                    .map(followRepository::findById) 
-                    .filter(Optional::isPresent)
-                    .map(Optional::get) 
-                    .collect(Collectors.toList());
-            user.setFollowers(followers);
-        }
-        if (loginResponseDTO.getFollowingIds()!= null) {
-            List<Follow> following = loginResponseDTO.getFollowingIds().stream()
-                    .map(followRepository::findById) 
-                    .filter(Optional::isPresent)
-                    .map(Optional::get) 
-                    .collect(Collectors.toList());
-            user.setFollowers(following);
-        }
 
         return userRepository.save(user);
     }

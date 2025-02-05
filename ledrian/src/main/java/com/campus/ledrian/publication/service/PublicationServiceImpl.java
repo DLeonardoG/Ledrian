@@ -80,7 +80,8 @@ public class PublicationServiceImpl implements PublicationService {
                         interation.getUserReceivingInteration().getId(),
                         interation.getTypeInteration().getId(),
                         interation.getDate(),
-                        interation.getComment()
+                        interation.getComment(),
+                        interation.getUsername()
                 ))
                 .collect(Collectors.toList());
 

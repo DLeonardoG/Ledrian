@@ -135,9 +135,4 @@ public class PublicationController {
     }
 
     
-    // asi seria lo basico 
-    // no se como usarlo con security
-    // creo que ya esta ready brou
-    
-    
 }
