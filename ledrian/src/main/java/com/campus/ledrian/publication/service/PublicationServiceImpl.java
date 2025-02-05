@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PublicationServiceImpl implements PublicationService {
@@ -47,6 +48,15 @@ public class PublicationServiceImpl implements PublicationService {
         Publication publication = convertToEntity(publicationDTO);
         Publication savedPublication = publicationRepository.save(publication);
         return convertToDTO(savedPublication);
+    }
+    @Override
+    @Transactional
+    public PublicationDTO updateDescription(Long id, String description) {
+        Publication publication = publicationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Publicación no encontrada para id: " + id));
+        publication.setDescription(description);
+        Publication updatedPublication = publicationRepository.save(publication);
+        return convertToDTO(updatedPublication);
     }
 
     @Override

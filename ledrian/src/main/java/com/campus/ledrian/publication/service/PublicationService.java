@@ -13,4 +13,5 @@ public interface PublicationService {
    List<PublicationDTO> findByUserId(Long userId);
 //   Publication(TypeInteration typeInterationDTO);
 //   TypeInteration convertToEntity(Publication);
+    PublicationDTO updateDescription(Long id, String description);
 }

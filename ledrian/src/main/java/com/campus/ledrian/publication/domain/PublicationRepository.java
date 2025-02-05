@@ -18,5 +18,7 @@ public interface PublicationRepository {
     @Query("select p from Publication p where p.publisher.id = :id")
     List<Publication> findByUserId(Long id);
 
+
+
 //    Publication findBy(String publi);
 }
