@@ -83,7 +83,8 @@ public class InterationServiceImpl implements InterationService {
                 interation.getUserGivingInteration().getId(),
                 interation.getUserReceivingInteration().getId(),
                 interation.getTypeInteration().getId(),
-                interation.getDate()
+                interation.getDate(),
+                interation.getUsername()
         );
     }
 
@@ -137,6 +138,8 @@ public class InterationServiceImpl implements InterationService {
         interation.setDate(interationDTO.getDate());
 
         interation.setComment(interationDTO.getComment());
+
+        interation.setUsername(interationDTO.getUsername());
 
         return interation;
     }

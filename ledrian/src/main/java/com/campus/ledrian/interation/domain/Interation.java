@@ -39,8 +39,21 @@ public class Interation {
     private String comment;
     private boolean check;
 
+    private String username;
+
     public Interation() {
         this.check = false;
+    }
+
+    public Interation(Long id, Publication publication, User userReceivingInteration, User userGivingInteration, TypeInteration typeInteration, LocalDateTime date, String comment, String username) {
+        this.id = id;
+        this.publication = publication;
+        this.userReceivingInteration = userReceivingInteration;
+        this.userGivingInteration = userGivingInteration;
+        this.typeInteration = typeInteration;
+        this.date = date;
+        this.comment = comment;
+        this.username = username;
     }
 
     public Interation(Long id, Publication publication, User userReceivingInteration, User userGivingInteration, TypeInteration typeInteration, LocalDateTime date) {
@@ -90,6 +103,14 @@ public class Interation {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Publication getPublication() {

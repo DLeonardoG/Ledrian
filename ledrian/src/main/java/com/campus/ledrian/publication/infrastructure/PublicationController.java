@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -118,10 +119,20 @@ public class PublicationController {
         publicationDTO.setId(id);
         return publicationServiceImpl.save(publicationDTO);
     }
-    
-    // asi seria lo basico 
-    // no se como usarlo con security
-    // creo que ya esta ready brou
-    
+
+    @PatchMapping("/{id}/description")
+    public ResponseEntity<PublicationDTO> updatePublicationDescription(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> payload) {
+
+        String newDescription = payload.get("description");
+        if(newDescription == null || newDescription.trim().isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+
+        PublicationDTO updatedPublication = publicationServiceImpl.updateDescription(id, newDescription);
+        return ResponseEntity.ok(updatedPublication);
+    }
+
     
 }

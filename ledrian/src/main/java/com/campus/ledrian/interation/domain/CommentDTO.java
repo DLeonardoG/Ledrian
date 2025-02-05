@@ -11,6 +11,7 @@ public class CommentDTO {
     private Long typeInterationId;
     private LocalDateTime date;
     private String comment;
+    private String username;
 
     public CommentDTO() {
     }
@@ -25,8 +26,27 @@ public class CommentDTO {
         this.comment = comment;
     }
 
+    public CommentDTO(Long id, Long publicationId, Long userGivingId, Long userReceivingId, Long typeInterationId, LocalDateTime date, String comment, String username) {
+        this.id = id;
+        this.publicationId = publicationId;
+        this.userGivingId = userGivingId;
+        this.userReceivingId = userReceivingId;
+        this.typeInterationId = typeInterationId;
+        this.date = date;
+        this.comment = comment;
+        this.username = username;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setId(Long id) {

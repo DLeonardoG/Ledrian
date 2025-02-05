@@ -2,10 +2,7 @@ package com.campus.ledrian.user.infrastructure;
 
 import com.campus.ledrian.user.application.UserService;
 import com.campus.ledrian.user.application.UserServiceImpl;
-import com.campus.ledrian.user.domain.User;
-import com.campus.ledrian.user.domain.UserDTO;
-import com.campus.ledrian.user.domain.UserProfileDTO;
-import com.campus.ledrian.user.domain.UserSearchDTO;
+import com.campus.ledrian.user.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +31,19 @@ public class UserController {
                         user.getPhoto()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping("/edit/{userId}")
+    public LoginResponseDTO editUser(@PathVariable long userId, @RequestBody LoginResponseDTO loginResponseDTO) {
+        User updatedUser = userService.edit(userId, loginResponseDTO);
+        LoginResponseDTO response = new LoginResponseDTO();
+        response.setId(updatedUser.getId());
+        response.setName(updatedUser.getName());
+        response.setLastname(updatedUser.getLastname());
+        response.setEmail(updatedUser.getEmail());
+        response.setUsername(updatedUser.getUsername());
+        response.setBio(updatedUser.getBio());
+        return response;
     }
 
     @GetMapping("/followings/{userId}")
