@@ -27,5 +27,8 @@ public interface InterationRepository {
             @Param("postId") Long postId,
             @Param("typeId") Long typeId
     );
+    
+    @Query("SELECT i FROM Interation i WHERE i.userReceivingInteration.id = :userId AND i.check = false ORDER BY i.date DESC")
+List<Interation> findInterationsByReceiver(@Param("userId") Long userId);
 
 }

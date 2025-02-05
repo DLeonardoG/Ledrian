@@ -4,6 +4,7 @@ import com.campus.ledrian.interation.domain.CommentDTO;
 import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.interation.domain.InterationDTO;
 import com.campus.ledrian.interation.domain.InterationRepository;
+import com.campus.ledrian.interation.domain.NotificationDTO;
 import com.campus.ledrian.publication.domain.Publication;
 import com.campus.ledrian.publication.domain.PublicationRepository;
 import com.campus.ledrian.typeinteration.domain.TypeInteration;
@@ -28,9 +29,9 @@ public class InterationServiceImpl implements InterationService {
 
     @Autowired
     public InterationServiceImpl(InterationRepository interationRepository,
-                                 UserRepository userRepository,
-                                 TypeInterationRepository typeInterationRepository,
-                                 PublicationRepository publicationRepository) {
+            UserRepository userRepository,
+            TypeInterationRepository typeInterationRepository,
+            PublicationRepository publicationRepository) {
         this.interationRepository = interationRepository;
         this.userRepository = userRepository;
         this.typeInterationRepository = typeInterationRepository;
@@ -41,6 +42,12 @@ public class InterationServiceImpl implements InterationService {
     public List<InterationDTO> findAll() {
         return interationRepository.findAll().stream()
                 .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<NotificationDTO> findNotifications(Long id) {
+        return interationRepository.findInterationsByReceiver(id).stream()
+                .map(this::convertNotificationToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -60,8 +67,6 @@ public class InterationServiceImpl implements InterationService {
         Interation savedInteration = interationRepository.save(interation);
         return convertToDTO(savedInteration);
     }
-
-
 
     @Override
     public void deleteById(Long id) {
@@ -92,6 +97,17 @@ public class InterationServiceImpl implements InterationService {
                 interation.getDate(),
                 interation.getComment()
         );
+    }
+
+    private NotificationDTO convertNotificationToDTO(Interation interation) {
+        NotificationDTO notificationDTO = new NotificationDTO();
+        notificationDTO.setId(interation.getId());
+        notificationDTO.setReceiver(interation.getUserReceivingInteration().getId());
+        notificationDTO.setGiver(interation.getUserGivingInteration().getId());
+        notificationDTO.setType(interation.getTypeInteration().getId());
+        notificationDTO.setCheck(interation.isCheck());
+
+        return notificationDTO;
     }
 
     private Interation convertToEntity(InterationDTO interationDTO) {

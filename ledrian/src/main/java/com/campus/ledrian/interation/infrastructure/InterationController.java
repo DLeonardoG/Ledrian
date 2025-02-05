@@ -5,7 +5,8 @@ import com.campus.ledrian.interation.domain.CommentDTO;
 import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.interation.domain.InterationDTO;
 import com.campus.ledrian.interation.domain.InterationRepository;
-import com.campus.ledrian.interation.service.InterationServiceImpl;
+import com.campus.ledrian.interation.domain.NotificationDTO;
+import com.campus.ledrian.interation.service.InterationServiceImpl; 
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,11 @@ public class InterationController {
     public InterationController(InterationServiceImpl interationServiceImpl, InterationRepository interationRepository) {
         this.interationServiceImpl = interationServiceImpl;
         this.interationRepository = interationRepository;
+    }
+    
+    @GetMapping("/notifications/{id}")
+    public List<NotificationDTO> getNotification(@PathVariable Long id) {
+        return interationServiceImpl.findNotifications(id);
     }
 
     @GetMapping
