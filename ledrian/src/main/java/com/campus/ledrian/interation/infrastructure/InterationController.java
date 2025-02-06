@@ -57,6 +57,24 @@ public class InterationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedInteration);
     }
 
+    @PatchMapping("/{id}/comment")
+    public ResponseEntity<InterationDTO> updateComment(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+        if (payload == null || !payload.containsKey("comment")) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<InterationDTO> optionalInterationDTO = interationServiceImpl.findById(id);
+        if (!optionalInterationDTO.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        InterationDTO interationDTO = optionalInterationDTO.get();
+        interationDTO.setComment(payload.get("comment"));
+
+        InterationDTO updatedInteration = interationServiceImpl.save(interationDTO);
+        return ResponseEntity.ok(updatedInteration);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<InterationDTO> updateInteration(@PathVariable Long id, @RequestBody InterationDTO interationDTO) {
