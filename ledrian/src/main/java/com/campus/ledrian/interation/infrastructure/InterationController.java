@@ -29,11 +29,6 @@ public class InterationController {
         this.interationServiceImpl = interationServiceImpl;
         this.interationRepository = interationRepository;
     }
-    
-    @GetMapping("/notifications/{id}")
-    public List<NotificationDTO> getNotification(@PathVariable Long id) {
-        return interationServiceImpl.findNotifications(id);
-    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

@@ -14,6 +14,8 @@ import com.campus.ledrian.user.domain.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,12 +44,6 @@ public class InterationServiceImpl implements InterationService {
     public List<InterationDTO> findAll() {
         return interationRepository.findAll().stream()
                 .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
-
-    public List<NotificationDTO> findNotifications(Long id) {
-        return interationRepository.findInterationsByReceiver(id).stream()
-                .map(this::convertNotificationToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -100,15 +96,29 @@ public class InterationServiceImpl implements InterationService {
         );
     }
 
-    private NotificationDTO convertNotificationToDTO(Interation interation) {
-        NotificationDTO notificationDTO = new NotificationDTO();
-        notificationDTO.setId(interation.getId());
-        notificationDTO.setReceiver(interation.getUserReceivingInteration().getId());
-        notificationDTO.setGiver(interation.getUserGivingInteration().getId());
-        notificationDTO.setType(interation.getTypeInteration().getId());
-        notificationDTO.setCheck(interation.isCheck());
+    public NotificationDTO NotificationtoDTO(Interation interation) {
+        NotificationDTO dto = new NotificationDTO();
+        dto.setId(interation.getId());
+        dto.setReceiver(interation.getUserReceivingInteration().getId());
+        dto.setGiver(interation.getUserGivingInteration().getId());
+        dto.setType(interation.getTypeInteration().getId());
+        dto.setCheck(interation.isCheck());
+        dto.setComment(interation.getComment());
+        dto.setDate(interation.getDate());
+        dto.setUsername(interation.getUsername());
+        return dto;
+    }
 
-        return notificationDTO;
+    public List<NotificationDTO> getUnseenNotifications(Long userId) {
+        List<Interation> interations = interationRepository.findUnseenNotificationsByUserId(userId);
+        return interations.stream()
+                .map(this::NotificationtoDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void markNotificationAsSeen(Long notificationId) {
+        interationRepository.markAsSeen(notificationId);
     }
 
     private Interation convertToEntity(InterationDTO interationDTO) {
