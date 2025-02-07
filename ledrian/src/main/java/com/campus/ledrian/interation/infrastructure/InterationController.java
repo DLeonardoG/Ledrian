@@ -5,8 +5,7 @@ import com.campus.ledrian.interation.domain.CommentDTO;
 import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.interation.domain.InterationDTO;
 import com.campus.ledrian.interation.domain.InterationRepository;
-import com.campus.ledrian.interation.domain.NotificationDTO;
-import com.campus.ledrian.interation.service.InterationServiceImpl; 
+import com.campus.ledrian.interation.service.InterationServiceImpl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,15 +42,6 @@ public class InterationController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<InterationDTO> createInteration(@RequestBody InterationDTO interationDTO) {
-        if (interationDTO == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        InterationDTO savedInteration = interationServiceImpl.save(interationDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedInteration);
-    }
-
     @PatchMapping("/{id}/comment")
     public ResponseEntity<InterationDTO> updateComment(@PathVariable Long id, @RequestBody Map<String, String> payload) {
         if (payload == null || !payload.containsKey("comment")) {
@@ -68,6 +58,15 @@ public class InterationController {
 
         InterationDTO updatedInteration = interationServiceImpl.save(interationDTO);
         return ResponseEntity.ok(updatedInteration);
+    }
+
+    @PostMapping
+    public ResponseEntity<InterationDTO> createInteration(@RequestBody InterationDTO interationDTO) {
+        if (interationDTO == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        InterationDTO savedInteration = interationServiceImpl.save(interationDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedInteration);
     }
 
 

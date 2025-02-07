@@ -4,18 +4,19 @@ import com.campus.ledrian.interation.domain.CommentDTO;
 import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.interation.domain.InterationDTO;
 import com.campus.ledrian.interation.domain.InterationRepository;
-import com.campus.ledrian.interation.domain.NotificationDTO;
+import com.campus.ledrian.notification.application.NotificationServiceImpl;
+import com.campus.ledrian.notification.domain.NotificationDTO;
 import com.campus.ledrian.publication.domain.Publication;
 import com.campus.ledrian.publication.domain.PublicationRepository;
 import com.campus.ledrian.typeinteration.domain.TypeInteration;
 import com.campus.ledrian.typeinteration.domain.TypeInterationRepository;
 import com.campus.ledrian.user.domain.User;
 import com.campus.ledrian.user.domain.UserRepository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,21 +25,22 @@ import javax.xml.stream.events.Comment;
 @Service
 public class InterationServiceImpl implements InterationService {
 
+    private final NotificationServiceImpl notificationService;
     private final InterationRepository interationRepository;
     private final UserRepository userRepository;
     private final TypeInterationRepository typeInterationRepository;
     private final PublicationRepository publicationRepository;
 
+
     @Autowired
-    public InterationServiceImpl(InterationRepository interationRepository,
-            UserRepository userRepository,
-            TypeInterationRepository typeInterationRepository,
-            PublicationRepository publicationRepository) {
+    public InterationServiceImpl(NotificationServiceImpl notificationService, InterationRepository interationRepository, UserRepository userRepository, TypeInterationRepository typeInterationRepository, PublicationRepository publicationRepository) {
+        this.notificationService = notificationService;
         this.interationRepository = interationRepository;
         this.userRepository = userRepository;
         this.typeInterationRepository = typeInterationRepository;
         this.publicationRepository = publicationRepository;
     }
+
 
     @Override
     public List<InterationDTO> findAll() {
@@ -61,8 +63,26 @@ public class InterationServiceImpl implements InterationService {
 
         Interation interation = convertToEntity(interationDTO);
         Interation savedInteration = interationRepository.save(interation);
+
+        NotificationDTO notificationDTO = new NotificationDTO();
+        if (savedInteration.getTypeInteration().getId() == 1) {
+            notificationDTO.setType("Like");
+            notificationDTO.setContent("You received a like from " + savedInteration.getUserGivingInteration().getUsername());
+        } else if (savedInteration.getTypeInteration().getId() == 2){
+            notificationDTO.setType("Comment");
+            notificationDTO.setContent(savedInteration.getComment());
+        } else {
+            notificationDTO.setType("Interation");
+            notificationDTO.setContent("You recived an interation from " + savedInteration.getUserGivingInteration().getUsername());
+        }
+
+        notificationDTO.setIdGiver(savedInteration.getUserGivingInteration().getId());
+        notificationDTO.setIdReceiver(savedInteration.getUserReceivingInteration().getId());
+        notificationService.createNotification(notificationDTO);
+
         return convertToDTO(savedInteration);
     }
+
 
     @Override
     public void deleteById(Long id) {
@@ -94,31 +114,6 @@ public class InterationServiceImpl implements InterationService {
                 interation.getDate(),
                 interation.getComment()
         );
-    }
-
-    public NotificationDTO NotificationtoDTO(Interation interation) {
-        NotificationDTO dto = new NotificationDTO();
-        dto.setId(interation.getId());
-        dto.setReceiver(interation.getUserReceivingInteration().getId());
-        dto.setGiver(interation.getUserGivingInteration().getId());
-        dto.setType(interation.getTypeInteration().getId());
-        dto.setCheck(interation.isCheck());
-        dto.setComment(interation.getComment());
-        dto.setDate(interation.getDate());
-        dto.setUsername(interation.getUsername());
-        return dto;
-    }
-
-    public List<NotificationDTO> getUnseenNotifications(Long userId) {
-        List<Interation> interations = interationRepository.findUnseenNotificationsByUserId(userId);
-        return interations.stream()
-                .map(this::NotificationtoDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void markNotificationAsSeen(Long notificationId) {
-        interationRepository.markAsSeen(notificationId);
     }
 
     private Interation convertToEntity(InterationDTO interationDTO) {

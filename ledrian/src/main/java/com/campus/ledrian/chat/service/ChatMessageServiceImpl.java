@@ -4,6 +4,8 @@ package com.campus.ledrian.chat.service;
 import com.campus.ledrian.chat.domain.ChatMessage;
 import com.campus.ledrian.chat.domain.ChatMessageDTO;
 import com.campus.ledrian.chat.domain.ChatMessageRepository;
+import com.campus.ledrian.notification.application.NotificationServiceImpl;
+import com.campus.ledrian.notification.domain.NotificationDTO;
 import com.campus.ledrian.user.domain.User;
 import com.campus.ledrian.user.domain.UserRepository;
 import java.time.LocalDateTime;
@@ -17,7 +19,8 @@ public class ChatMessageServiceImpl {
     
      @Autowired
     private ChatMessageRepository chatMessageRepository;
-
+    @Autowired
+     private NotificationServiceImpl notificationService;
     @Autowired
     private UserRepository usuarioRepository;
 
@@ -49,6 +52,13 @@ public class ChatMessageServiceImpl {
         chatMessage.setRecipient(recipient);
 
         ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
+
+        NotificationDTO notificationDTO = new NotificationDTO();
+        notificationDTO.setType("Message");
+        notificationDTO.setContent(chatMessage.getContent());
+        notificationDTO.setIdGiver(chatMessage.getSender().getId());
+        notificationDTO.setIdReceiver(chatMessage.getRecipient().getId());
+        notificationService.createNotification(notificationDTO);
 
         return convertToDTO(savedMessage);
     }

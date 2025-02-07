@@ -37,12 +37,10 @@ public class Interation {
     private LocalDateTime date;
 
     private String comment;
-    private boolean check;
 
     private String username;
 
     public Interation() {
-        this.check = false;
     }
 
     public Interation(Long id, Publication publication, User userReceivingInteration, User userGivingInteration, TypeInteration typeInteration, LocalDateTime date, String comment, String username) {
@@ -63,8 +61,6 @@ public class Interation {
         this.userGivingInteration = userGivingInteration;
         this.typeInteration = typeInteration;
         this.date = date;
-        this.check = false;
-
     }
 
     public Interation(Long id, Publication publication, User userReceivingInteration, User userGivingInteration, TypeInteration typeInteration, LocalDateTime date, String comment) {
@@ -75,8 +71,6 @@ public class Interation {
         this.typeInteration = typeInteration;
         this.date = date;
         this.comment = comment;
-        this.check = false;
-
     }
 
     public Interation(Publication publication, User userReceivingInteration, User userGivingInteration, TypeInteration typeInteration, LocalDateTime date) {
@@ -85,18 +79,8 @@ public class Interation {
         this.userGivingInteration = userGivingInteration;
         this.typeInteration = typeInteration;
         this.date = date;
-        this.check = false;
-
     }
 
-    public boolean isCheck() {
-        return check;
-    }
-
-    public void setCheck(boolean check) {
-        this.check = check;
-    }
-    
     public Long getId() {
         return id;
     }

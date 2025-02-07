@@ -3,6 +3,9 @@ package com.campus.ledrian.follow.service;
 import com.campus.ledrian.follow.domain.Follow;
 import com.campus.ledrian.follow.domain.FollowDTO;
 import com.campus.ledrian.follow.domain.FollowRepository;
+import com.campus.ledrian.notification.application.NotificationServiceImpl;
+import com.campus.ledrian.notification.domain.NotificationDTO;
+import com.campus.ledrian.notification.domain.NotificationRepository;
 import com.campus.ledrian.user.domain.User;
 import com.campus.ledrian.user.domain.UserRepository;
 import java.util.List;
@@ -17,12 +20,18 @@ public class FollowServiceImpl implements FollowService {
 
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
+    private final NotificationServiceImpl notificationService;
+
+
 
     @Autowired
-    public FollowServiceImpl(FollowRepository followRepository, UserRepository userRepository) {
+    public FollowServiceImpl(FollowRepository followRepository, UserRepository userRepository, NotificationServiceImpl notificationService) {
         this.followRepository = followRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
+
+
 
     @Override
     public List<FollowDTO> findAll() {
@@ -42,6 +51,13 @@ public class FollowServiceImpl implements FollowService {
     public FollowDTO save(FollowDTO followDTO) {
         Follow follow = convertToEntity(followDTO);
         Follow savedFollow = followRepository.save(follow);
+
+        NotificationDTO notificationDTO = new NotificationDTO();
+        notificationDTO.setType("Follow");
+        notificationDTO.setContent("Follow you, checkout their profile");
+        notificationDTO.setIdGiver(follow.getFollower().getId());
+        notificationDTO.setIdReceiver(follow.getFollowing().getId());
+        notificationService.createNotification(notificationDTO);
         return convertToDTO(savedFollow);
     }
 

@@ -56,8 +56,6 @@ public class UserServiceImpl {
         return userRepository.save(User);
     }
 
-
-
     public User edit(long userId, LoginResponseDTO loginResponseDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -111,19 +109,16 @@ public class UserServiceImpl {
         dto.setPhoto(user.getPhoto());
         dto.setBio(user.getBio());
 
-        // Convertir las publicaciones a una lista de IDs
         List<Long> publicationIds = user.getPublications().stream()
                 .map(Publication::getId)
                 .collect(Collectors.toList());
         dto.setPublications(publicationIds);
 
-        // Convertir los seguidores a una lista de IDs
         List<Long> followerIds = user.getFollowers().stream()
                 .map(follow -> follow.getFollower().getId())
                 .collect(Collectors.toList());
         dto.setFollowersIds(followerIds);
 
-        // Convertir los seguidos a una lista de IDs
         List<Long> followingIds = user.getFollowing().stream()
                 .map(follow -> follow.getFollowing().getId())
                 .collect(Collectors.toList());
@@ -141,12 +136,11 @@ public class UserServiceImpl {
         user.setPhoto(dto.getPhoto());
         user.setBio(dto.getBio());
 
-        // Asignar publicaciones (si es necesario)
         if (dto.getPublications() != null) {
             List<Publication> publications = dto.getPublications().stream()
-                    .map(publicationRepo::findById) // Buscar cada publicación por ID
-                    .filter(Optional::isPresent) // Filtrar las que existen
-                    .map(Optional::get) // Obtener la publicación
+                    .map(publicationRepo::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
                     .collect(Collectors.toList());
             user.setPublications(publications);
         }

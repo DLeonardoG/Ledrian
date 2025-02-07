@@ -15,7 +15,6 @@ public class LoginResponseDTO {
     private List<Long> followersIds;
     private List<Long> followingIds;
 
-    // Getters y Setters
     public String getToken() {
         return token;
     }

@@ -4,9 +4,19 @@ import com.campus.ledrian.user.application.UserService;
 import com.campus.ledrian.user.application.UserServiceImpl;
 import com.campus.ledrian.user.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -14,10 +24,12 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserServiceImpl userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserServiceImpl userService) {
+    public UserController(UserServiceImpl userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/search")
@@ -31,6 +43,40 @@ public class UserController {
                         user.getPhoto()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @PatchMapping(value = "/{userId}/photo", consumes = "multipart/form-data")
+    public ResponseEntity<?> updateUserPhoto(@PathVariable Long userId,
+                                             @RequestParam("photo") MultipartFile photo) {
+        try {
+            String uploadDir = "uploads/";
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+
+            Files.copy(photo.getInputStream(), filePath);
+
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (!optionalUser.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+            }
+            User user = optionalUser.get();
+            user.setPhoto(fileName);
+            userRepository.save(user);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", user.getId());
+            response.put("photo", user.getPhoto());
+
+            return ResponseEntity.ok(response);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir la imagen");
+        }
     }
 
     @PutMapping("/edit/{userId}")

@@ -3,6 +3,8 @@ package com.campus.ledrian.publication.service;
 import com.campus.ledrian.interation.domain.Interation;
 import com.campus.ledrian.interation.domain.InterationDTO;
 import com.campus.ledrian.interation.domain.InterationRepository;
+import com.campus.ledrian.notification.application.NotificationServiceImpl;
+import com.campus.ledrian.notification.domain.NotificationDTO;
 import com.campus.ledrian.publication.domain.Publication;
 import com.campus.ledrian.publication.domain.PublicationDTO;
 import com.campus.ledrian.publication.domain.PublicationRepository;
@@ -21,6 +23,8 @@ public class PublicationServiceImpl implements PublicationService {
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
     private final InterationRepository interationRepository;
+    @Autowired
+    private NotificationServiceImpl notificationService;
 
     @Autowired
     public PublicationServiceImpl(PublicationRepository publicationRepository, UserRepository userRepository, InterationRepository interationRepository) {
@@ -47,6 +51,19 @@ public class PublicationServiceImpl implements PublicationService {
     public PublicationDTO save(PublicationDTO publicationDTO) {
         Publication publication = convertToEntity(publicationDTO);
         Publication savedPublication = publicationRepository.save(publication);
+
+
+        savedPublication.getPublisher().getFollowers().stream().map(follower ->
+                notificationService.createNotification(
+                        new NotificationDTO(
+                                "Publication",
+                                savedPublication.getDescription(),
+                                savedPublication.getPublisher().getId(),
+                                follower.getId()
+                        )
+                )
+                );
+
         return convertToDTO(savedPublication);
     }
     @Override

@@ -3,6 +3,7 @@ package com.campus.ledrian.user.domain;
 import com.campus.ledrian.chat.domain.ChatMessage;
 import com.campus.ledrian.follow.domain.Follow;
 import com.campus.ledrian.interation.domain.Interation;
+import com.campus.ledrian.notification.domain.Notification;
 import com.campus.ledrian.publication.domain.Publication;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -41,14 +42,18 @@ public class User {
     private List<Interation> received;
     @OneToMany(mappedBy = "userGivingInteration", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Interation> delivered;
-    
+
+    @OneToMany(mappedBy = "giver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> notificationGiver;
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> notificationReceiver;
+
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> sentMessages = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> receivedMessages = new ArrayList<>();
-    
-    
 
     public User() {
     }
@@ -166,7 +171,37 @@ public class User {
     public void setDelivered(List<Interation> delivered) {
         this.delivered = delivered;
     }
-    
-    
 
+
+    public List<Notification> getNotificationGiver() {
+        return notificationGiver;
+    }
+
+    public void setNotificationGiver(List<Notification> notificationGiver) {
+        this.notificationGiver = notificationGiver;
+    }
+
+    public List<Notification> getNotificationReceiver() {
+        return notificationReceiver;
+    }
+
+    public void setNotificationReceiver(List<Notification> notificationReceiver) {
+        this.notificationReceiver = notificationReceiver;
+    }
+
+    public List<ChatMessage> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages(List<ChatMessage> sentMessages) {
+        this.sentMessages = sentMessages;
+    }
+
+    public List<ChatMessage> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(List<ChatMessage> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
 }
