@@ -54,9 +54,9 @@ public class FollowServiceImpl implements FollowService {
 
         NotificationDTO notificationDTO = new NotificationDTO();
         notificationDTO.setType("Follow");
-        notificationDTO.setContent("Follow you, checkout their profile");
-        notificationDTO.setIdGiver(follow.getFollower().getId());
-        notificationDTO.setIdReceiver(follow.getFollowing().getId());
+        notificationDTO.setContent(follow.getFollowing().getUsername() + " started following you...");
+        notificationDTO.setIdGiver(follow.getFollowing().getId());
+        notificationDTO.setIdReceiver(follow.getFollower().getId());
         notificationService.createNotification(notificationDTO);
         return convertToDTO(savedFollow);
     }

@@ -67,10 +67,10 @@ public class InterationServiceImpl implements InterationService {
         NotificationDTO notificationDTO = new NotificationDTO();
         if (savedInteration.getTypeInteration().getId() == 1) {
             notificationDTO.setType("Like");
-            notificationDTO.setContent("You received a like from " + savedInteration.getUserGivingInteration().getUsername());
+            notificationDTO.setContent(savedInteration.getUserGivingInteration().getUsername() + " liked your post");
         } else if (savedInteration.getTypeInteration().getId() == 2){
             notificationDTO.setType("Comment");
-            notificationDTO.setContent(savedInteration.getComment());
+            notificationDTO.setContent(savedInteration.getUserGivingInteration().getUsername() + ": "+savedInteration.getComment());
         } else {
             notificationDTO.setType("Interation");
             notificationDTO.setContent("You recived an interation from " + savedInteration.getUserGivingInteration().getUsername());
