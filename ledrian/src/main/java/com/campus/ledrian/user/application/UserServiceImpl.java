@@ -44,7 +44,12 @@ public class UserServiceImpl {
     }
 
     public User register(RegisterUserDTO registerUserDTO) {
-
+        if (userRepository.existsByUsername(registerUserDTO.getUsername())) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+        if (userRepository.existsByEmail(registerUserDTO.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
         User User = new User();
         User.setName(registerUserDTO.getName());
         User.setLastname(registerUserDTO.getLastname());
