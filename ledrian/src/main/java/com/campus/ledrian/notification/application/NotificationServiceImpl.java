@@ -27,34 +27,15 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
 
-    public List<NotificationDTO> findUnreadsByUser(Long id) {
-        return notificationRepository.findUnreadNotificationsByUserId(id).stream()
+    public List<NotificationDTO> findNotificationsByUser(Long id) {
+        return notificationRepository.findNotificationsByUserId(id).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
-    }
-
-    public List<NotificationDTO> findReadsByUser(Long id) {
-        return notificationRepository.findReadNotificationsByUserId(id).stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void markNotificationAsRead(Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new RuntimeException("Notification not found"));
-        notificationRepository.markNotificationAsRead(notification.getId());
     }
 
     @Transactional
     public void markAllNotificationsAsRead(Long userId) {
-        List<Notification> notifications = notificationRepository.findReadNotificationsByUserId(userId);
-        if (notifications.isEmpty()) {
-            return;
-        }
-        for (Notification notification : notifications) {
-            notificationRepository.markNotificationAsRead(notification.getId());
-        }
+        notificationRepository.markAllNotificationsAsRead(userId);
     }
 
     public Optional<NotificationDTO> findById(Long id) {

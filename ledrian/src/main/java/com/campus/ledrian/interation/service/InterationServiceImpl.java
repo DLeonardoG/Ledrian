@@ -77,7 +77,7 @@ public class InterationServiceImpl implements InterationService {
         }
 
         notificationDTO.setIdGiver(savedInteration.getUserGivingInteration().getId());
-        notificationDTO.setIdReceiver(savedInteration.getUserReceivingInteration().getId());
+        notificationDTO.setIdReceiver(savedInteration.getPublication().getPublisher().getId());
         notificationService.createNotification(notificationDTO);
 
         return convertToDTO(savedInteration);

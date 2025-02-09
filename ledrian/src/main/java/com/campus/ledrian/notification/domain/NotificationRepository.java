@@ -9,15 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NotificationRepository {
-    @Query("SELECT n FROM Notification n WHERE n.receiver.id = :userId AND n.checked = false")
-    List<Notification> findUnreadNotificationsByUserId(@Param("userId") Long userId);
-
-    @Query("SELECT n FROM Notification n WHERE n.receiver.id = :userId AND n.checked = true")
-    List<Notification> findReadNotificationsByUserId(@Param("userId") Long userId);
-
     @Modifying
-    @Query("UPDATE Notification n SET n.checked = true WHERE n.id = :notificationId")
-    void markNotificationAsRead(@Param("notificationId") Long notificationId);
+    @Query("UPDATE Notification n SET n.checked = true WHERE n.receiver.id = :userId")
+    void markAllNotificationsAsRead(@Param("userId") Long userId);
+
+    @Query("SELECT n FROM Notification n WHERE n.receiver.id = :userId")
+    List<Notification> findNotificationsByUserId(@Param("userId") Long userId);
+
     Notification save(Notification notification);
     List<Notification> findAll();
     Optional<Notification> findById(Long id);
