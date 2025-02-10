@@ -16,23 +16,10 @@ public class NotificationController {
     @Autowired
     private NotificationServiceImpl notificationService;
 
-    // Obtener notificaciones no leídas de un usuario
-    @GetMapping("/unread/{userId}")
-    public List<NotificationDTO> getUnreadNotifications(@PathVariable Long userId) {
-        return notificationService.findUnreadsByUser(userId);
-    }
-
-    // Obtener notificaciones leídas de un usuario
-    @GetMapping("/read/{userId}")
-    public List<NotificationDTO> getReadNotifications(@PathVariable Long userId) {
-        return notificationService.findReadsByUser(userId);
-    }
-
-    // Marcar una notificación como leída
-    @PutMapping("/read/{notificationId}")
-    public ResponseEntity<Void> markNotificationAsRead(@PathVariable Long notificationId) {
-        notificationService.markNotificationAsRead(notificationId);
-        return ResponseEntity.noContent().build();
+    // Obtener notificaciones de un usuario
+    @GetMapping("/all/{userId}")
+    public List<NotificationDTO> getNotifications(@PathVariable Long userId) {
+        return notificationService.findNotificationsByUser(userId);
     }
 
     // Marcar todas las notificaciones de un usuario como leídas

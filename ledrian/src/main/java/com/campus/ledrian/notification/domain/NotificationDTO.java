@@ -22,7 +22,7 @@ public class NotificationDTO {
         this.date = date;
         this.content = content;
         this.type = type;
-        this.checked = false;
+        this.checked = checked;
     }
 
     public NotificationDTO(String type, String content, Long idGiver, Long idReceiver ) {

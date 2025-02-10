@@ -4,6 +4,7 @@ package com.campus.ledrian.user.infrastructure;
 import com.campus.ledrian.user.application.UserServiceImpl;
 import com.campus.ledrian.user.domain.RegisterUserDTO;
 import com.campus.ledrian.user.domain.User;
+import com.campus.ledrian.user.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +17,17 @@ public class RegisterController {
     @Autowired
     private UserServiceImpl userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping("/api/register")
     public ResponseEntity<?> register(@RequestBody RegisterUserDTO registerUserDTO) {
         try {
-            if (userService.emailExists(registerUserDTO.getEmail())) {
-                return ResponseEntity.badRequest().body("El correo ya está registrado.");
+            if (userRepository.existsByUsername(registerUserDTO.getUsername())) {
+                throw new IllegalArgumentException("Username already exists");
+            }
+            if (userRepository.existsByEmail(registerUserDTO.getEmail())) {
+                throw new IllegalArgumentException("Email already exists");
             }
 
             User savedUser = userService.register(registerUserDTO);
